@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #eaf0ff;
+
+}
+
+/* header + nav */
+
+header {
+    display: flex;
+    padding: 0 30px;
+    background-color: #181938;
+    height: 95px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-main img {
+    border-radius: 50px;
+}
+
+.profile img {
+    border-radius: 40px;
+}
+
+.profile a {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    justify-content: center;
+}
+
+.profile a:hover {
+    color: rgb(81, 136, 255);
+}
+
+nav {
+    display: flex;
+    background-color: #ACE2FD;
+    height: 60px;
+    align-items: center;
+    padding: 0 20px;
+}
+
+nav a {
+    color: black;
+    text-decoration: none;
+    padding: 0 25px;
+    font-size: 18px;
+}
+
+nav a:hover {
+    color: rgb(81, 136, 255);
+}
+
+/* content  */
+
+.content {
+    flex: 1;
+    background-color: #eaf0ff;
+}
+
+/* dashboard */
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+
+}
+
+.card-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #c8d6ff;
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    width: 200px;
+}
+
+.card-stat p {
+    margin: 0px;
+}
+
+.head-list {
+    margin: 0 20px 20px 50px;
+}
+
+.list-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.list-card {
+    padding: 10px;
+    width: 400px;
+    max-height: 500px;
+    border-radius: 10px;
+    background-color: #a8f7c5;
+}
+
+
+.list-card table {
+    width: 100%;
+    background-color: #a8f7c5;
+}
+
+.list-card th,
+.list-card td {
+    text-align: left;
+    padding: 10px;
+}
+
+.list-card th {
+    font-weight: bold;
+}
+
+.list-card tr:nth-child(odd) {
+    background-color: #c2fcd7;
+}
+
+/* request */
+.b1 {
+    margin: 20px 50px;
+}
+
+.table-req-head {
+    margin: 0 50px;
+}
+
+.table-container {
+    margin: 20px 50px;
+}
+
+.table-container .table th,
+.table-container .table td {
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
+.query-req-form {
+    display: flex;
+    margin: 30px 50px;
+    align-items: center;
+}
+
+.query-req-form .form-check {
+    display: flex;
+    margin: 0px 30px 0 0px;
+}
+
+
+/* footer */
+
+footer {
+    display: flex;
+    background-color: #181938;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid #dee2e6;
+    justify-content: center;
+}
