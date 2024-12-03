@@ -10,31 +10,9 @@
 </head>
 
 <body>
-    <header>
-        <div class="logo-main">
-            <a href="#index"><img src="https://via.placeholder.com/70" alt="logo-main"></a>
-        </div>
-        <div class="dropdown">
-            <div class="profile">
-                <img class="profile" src="https://via.placeholder.com/50" alt="profile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <ul class="dropdown-menu">
-                    <li><a href="#my-req">คำขอพัฒนาของฉัน</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a href="#logout">ลงชื่อออก</a></li>
-                </ul>
-            </div>
-        </div>
 
-    </header>
-    <nav>
-        <h2> คำขอพัฒนาซอฟท์แวร์ </h2>
-        <a href="index.php"> หน้าแรก </a>
-        <a href="request.php"> คำขอพัฒนา </a>
-        <a href="headchief.php"> หัวหน้าแผนก </a>
-        <a href="headdev.php"> หัวหน้าทีมพัฒนา </a>
-    </nav>
+    <?php include 'header.php' ?>
+
     <div class="content">
         <button class="b1 btn btn-success"> + เพิ่มคำขอพัฒนา</button>
         <h4 class="table-req-head">คำขอพัฒนาซอฟท์แวร์</h4>
@@ -42,13 +20,13 @@
             <form action="" method="POST" class="query-req-form">
                 <div class="form-check">
                     <label class="form-check-label" for="query-software-all">
-                        <input class="form-check-input" type="radio" name="query-software" value="all">
+                        <input class="form-check-input" type="radio" name="query-software" id="query-software-all" value="all" checked>
                         คำขอทั้งหมด
                     </label>
                 </div>
                 <div class="form-check">
                     <label class="form-check-label" for="query-software-mine">
-                        <input class="form-check-input" type="radio" name="query-software" value="mine">
+                        <input class="form-check-input" type="radio" name="query-software" id="query-software-mine" value="mine">
                         คำขอของฉัน
                     </label>
                 </div>
@@ -123,13 +101,7 @@
                         <td>รอหัวหน้าแผนก</td>
                         <td><button class="btn btn-primary" type="button">แสดงรายละเอียด</button></td>
                     </tr>
-                    <tr>
-                        <td>00/00/25xx</td>
-                        <td>ระบบ</td>
-                        <td>นาย ก</td>
-                        <td>รอหัวหน้าแผนก</td>
-                        <td><button class="btn btn-primary" type="button">แสดงรายละเอียด</button></td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>

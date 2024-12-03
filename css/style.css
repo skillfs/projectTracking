@@ -19,7 +19,7 @@ header {
     display: flex;
     padding: 0 30px;
     background-color: #181938;
-    height: 95px;
+    height: 90px;
     justify-content: space-between;
     align-items: center;
 }
@@ -68,6 +68,23 @@ nav a:hover {
     flex: 1;
     background-color: #eaf0ff;
 }
+
+/*  login */
+
+.form-login {
+    background-color: #ACE2FD;
+    justify-self: center;
+    width: 400px;
+    padding: 10px 30px 30px 30px;
+    border-radius: 30px;
+    margin: 200px 0;
+}
+
+.submit {
+    display: flex;
+    justify-content: flex-end;
+}
+
 
 /* dashboard */
 .stats-container {
@@ -158,6 +175,18 @@ nav a:hover {
 .query-req-form .form-check {
     display: flex;
     margin: 0px 30px 0 0px;
+}
+
+.form-check-label:hover {
+    background-color: #f0f8ff;
+    color: #0056b3;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+input[type="radio"]:checked+.form-check-label {
+    background-color: #0056b3;
+    color: white;
 }
 
 
