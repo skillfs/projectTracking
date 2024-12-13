@@ -9,7 +9,7 @@ class Software extends Model
 {
     use HasFactory;
 
-    protected $table = 'software';
+    protected $table = 'softwares';
 
     protected $fillable = ['name', 'tel', 'software_name', 'date', 'problem', 'purpose', 'target', 'status'];
 }

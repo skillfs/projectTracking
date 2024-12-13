@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Software;
 use App\Http\Requests\SaveSoftwareRequest;
+use Illuminate\Support\Facades\Auth;
 
 class SoftwareController extends Controller
 {
@@ -56,5 +57,35 @@ class SoftwareController extends Controller
 
         return redirect()->route('softwares.index')
             ->with('status', 'Software Deleted Successfully');
+    }
+
+    public function approveByDH(Software $software)
+    {
+        if (Auth::user()->status !== 'Department Head') {
+            abort(403, 'Unauthorized');
+        }
+
+        $software->update([
+            'approved_by_dh' => true,
+            'status' => 'approved by DH',
+        ]);
+
+        return redirect()->route('softwares.index')
+            ->with('status', 'Software approved by Department Head.');
+    }
+
+    public function approveByAdmin(Software $software)
+    {
+        if (Auth::user()->status !== 'Admin') {
+            abort(403, 'Unauthorized');
+        }
+
+        $software->update([
+            'approved_by_admin' => true,
+            'status' => 'approved by Admin',
+        ]);
+
+        return redirect()->route('softwares.index')
+            ->with('status', 'Software approved by Admin.');
     }
 }

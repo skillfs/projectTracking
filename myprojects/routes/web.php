@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SoftwareController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\HomeController;
 use App\Models\Software;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,7 +41,7 @@ Route::controller(SoftwareController::class)
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -57,3 +58,11 @@ Route::get('/department/dashboard', function () {
 Route::get('/user/dashboard', function () {
     return view('user.dashboard');
 })->middleware('auth')->name('user.dashboard');
+
+Route::patch('/softwares/{software}/approve-dh', [SoftwareController::class, 'approveByDH'])
+    ->name('softwares.approveByDH')
+    ->middleware('auth');
+
+Route::patch('/softwares/{software}/approve-admin', [SoftwareController::class, 'approveByAdmin'])
+    ->name('softwares.approveByAdmin')
+    ->middleware('auth');

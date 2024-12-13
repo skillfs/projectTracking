@@ -2,70 +2,86 @@
 
 @section('content')
 <div class="container">
-    <!-- Check if $software is available -->
-    @php
-    $software = $software ?? collect(); // Ensure $software is always defined as a collection
-    @endphp
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">งานพัฒนาซอฟต์แวร์</a>
+            <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="#">หน้าแรก</a>
+                <a class="nav-link" href="#">คำขอพัฒนา</a>
+            </div>
+            <div class="d-flex align-items-center">
+                <i class="bi bi-bell fs-4 text-white me-3"></i>
+                <div class="rounded-circle bg-white" style="width: 40px; height: 40px;"></div>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Summary Cards (Red Circle) -->
+    <!-- Summary Cards -->
     <div class="row text-center mb-4">
-        @if(Auth::check())
         <div class="col">
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">คำขอทั้งหมด</h5>
-                    <p class="card-text fs-4">
-                        @if(Auth::user()->status === 'Admin')
-                        {{ $software->count() }}
-                        @elseif(Auth::user()->status === 'Department Head')
-                        {{ $software->where('department_id', Auth::user()->department_id)->count() }}
-                        @else
-                        {{ $software->where('f_name', Auth::user()->f_name)->where('l_name', Auth::user()->l_name)->count() }}
-                        @endif
-                    </p>
+                    <p class="card-text fs-4">{{ $software->count() }}</p>
                     <p class="card-text">รายการ</p>
                 </div>
             </div>
         </div>
-        @foreach(['queued', 'in progress', 'canceled', 'completed'] as $status)
         <div class="col">
             <div class="card bg-primary text-white">
                 <div class="card-body">
-                    <h5 class="card-title">{{ ucfirst($status) }}</h5>
-                    <p class="card-text fs-4">
-                        @if(Auth::user()->status === 'Admin')
-                        {{ $software->where('status', $status)->count() }}
-                        @elseif(Auth::user()->status === 'Department Head')
-                        {{ $software->where('status', $status)->where('department_id', Auth::user()->department_id)->count() }}
-                        @else
-                        {{ $software->where('status', $status)->where('f_name', Auth::user()->f_name)->where('l_name', Auth::user()->l_name)->count() }}
-                        @endif
-                    </p>
+                    <h5 class="card-title">รอหัวหน้าแผนก</h5>
+                    <p class="card-text fs-4">{{ $software->where('status', 'pending')->count() }}</p>
                     <p class="card-text">รายการ</p>
                 </div>
             </div>
         </div>
-        @endforeach
-        @else
         <div class="col">
-            <div class="card bg-warning text-white">
+            <div class="card bg-primary text-white">
                 <div class="card-body">
-                    <h5 class="card-title">Guest Access</h5>
-                    <p class="card-text">Please log in to see your software requests.</p>
+                    <h5 class="card-title">รอหัวหน้าทีมพัฒนา</h5>
+                    <p class="card-text fs-4">{{ $software->where('status', 'approved by DH')->count() }}</p>
+                    <p class="card-text">รายการ</p>
                 </div>
             </div>
         </div>
-        @endif
+        <div class="col">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">รอคิวพัฒนา</h5>
+                    <p class="card-text fs-4">{{ $software->where('status', 'queued')->count() }}</p>
+                    <p class="card-text">รายการ</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">กำลังพัฒนา</h5>
+                    <p class="card-text fs-4">{{ $software->where('status', 'in progress')->count() }}</p>
+                    <p class="card-text">รายการ</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">พัฒนาเสร็จสิ้น</h5>
+                    <p class="card-text fs-4">{{ $software->where('status', 'completed')->count() }}</p>
+                    <p class="card-text">รายการ</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- List Tables (Blue Circle) -->
-    @if(Auth::check())
+    <!-- Table Section -->
     <div class="row">
-        @foreach(['queued' => 'รอคิว', 'in progress' => 'กำลังพัฒนา', 'canceled' => 'ยกเลิก', 'completed' => 'พัฒนาเสร็จสิ้น'] as $status => $label)
-        <div class="col-lg-3">
+        @foreach(['pending' => 'รอหัวหน้าแผนก', 'approved by DH' => 'รอหัวหน้าทีมพัฒนา', 'queued' => 'รอคิวพัฒนา', 'in progress' => 'กำลังพัฒนา', 'completed' => 'พัฒนาเสร็จสิ้น', 'canceled' => 'ยกเลิก'] as $status => $label)
+        <div class="col-lg-4 mb-3">
             <div class="card">
                 <div class="card-header bg-success text-white">
-                    {{ $label }}
+                    {{ $label }} {{ $software->where('status', $status)->count() }} รายการ
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -73,28 +89,36 @@
                             <tr>
                                 <th>ลำดับ</th>
                                 <th>ชื่อระบบ</th>
+                                <th>การกระทำ</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                            $filteredSoftware = [];
-                            if (Auth::user()->status === 'Admin') {
-                            $filteredSoftware = $software->where('status', $status);
-                            } elseif (Auth::user()->status === 'Department Head') {
-                            $filteredSoftware = $software->where('status', $status)->where('department_id', Auth::user()->department_id);
-                            } else {
-                            $filteredSoftware = $software->where('status', $status)->where('f_name', Auth::user()->f_name)->where('l_name', Auth::user()->l_name);
-                            }
-                            @endphp
-                            @foreach($filteredSoftware as $index => $item)
+                            @foreach($software->where('status', $status) as $index => $item)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->software_name }}</td>
+                                <td>
+                                    @if(Auth::user()->status === 'Department Head' && $item->status === 'pending')
+                                    <form method="POST" action="{{ route('softwares.approveByDH', $item) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-success btn-sm">อนุมัติ</button>
+                                    </form>
+                                    @elseif(Auth::user()->status === 'Admin' && $item->status === 'approved by DH')
+                                    <form method="POST" action="{{ route('softwares.approveByAdmin', $item) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-success btn-sm">อนุมัติ</button>
+                                    </form>
+                                    @else
+                                    <span class="text-muted">ไม่มีการกระทำ</span>
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
-                            @if(empty($filteredSoftware))
+                            @if($software->where('status', $status)->isEmpty())
                             <tr>
-                                <td colspan="2" class="text-center">ไม่มีข้อมูล</td>
+                                <td colspan="3" class="text-center">ไม่มีข้อมูล</td>
                             </tr>
                             @endif
                         </tbody>
@@ -104,6 +128,5 @@
         </div>
         @endforeach
     </div>
-    @endif
 </div>
 @endsection
