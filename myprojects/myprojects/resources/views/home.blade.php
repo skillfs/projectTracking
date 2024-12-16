@@ -24,7 +24,7 @@
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">คำขอทั้งหมด</h5>
-                    <p class="card-text fs-4">{{ $software->count() }}</p>
+                    <p class="card-text fs-4">{{ isset($software) ? $software->count() : 0 }}</p>
                     <p class="card-text">รายการ</p>
                 </div>
             </div>
@@ -33,7 +33,7 @@
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">รอหัวหน้าแผนก</h5>
-                    <p class="card-text fs-4">{{ $software->where('status', 'pending')->count() }}</p>
+                    <p class="card-text fs-4">{{ isset($software) ? $software->where('status', 'pending')->count() : 0 }}</p>
                     <p class="card-text">รายการ</p>
                 </div>
             </div>
@@ -42,7 +42,7 @@
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">รอหัวหน้าทีมพัฒนา</h5>
-                    <p class="card-text fs-4">{{ $software->where('status', 'approved by DH')->count() }}</p>
+                    <p class="card-text fs-4">{{ isset($software) ? $software->where('status', 'approved by DH')->count() : 0 }}</p>
                     <p class="card-text">รายการ</p>
                 </div>
             </div>
@@ -51,7 +51,7 @@
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">รอคิวพัฒนา</h5>
-                    <p class="card-text fs-4">{{ $software->where('status', 'queued')->count() }}</p>
+                    <p class="card-text fs-4">{{ isset($software) ? $software->where('status', 'queued')->count() : 0 }}</p>
                     <p class="card-text">รายการ</p>
                 </div>
             </div>
@@ -60,7 +60,7 @@
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">กำลังพัฒนา</h5>
-                    <p class="card-text fs-4">{{ $software->where('status', 'in progress')->count() }}</p>
+                    <p class="card-text fs-4">{{ isset($software) ? $software->where('status', 'in progress')->count() : 0 }}</p>
                     <p class="card-text">รายการ</p>
                 </div>
             </div>
@@ -69,7 +69,7 @@
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title">พัฒนาเสร็จสิ้น</h5>
-                    <p class="card-text fs-4">{{ $software->where('status', 'completed')->count() }}</p>
+                    <p class="card-text fs-4">{{ isset($software) ? $software->where('status', 'completed')->count() : 0 }}</p>
                     <p class="card-text">รายการ</p>
                 </div>
             </div>
@@ -78,6 +78,7 @@
 
     <!-- Table Section -->
     <div class="row">
+        @if(isset($software) && !$software->isEmpty())
         @foreach(['queued' => 'รอคิวพัฒนา', 'in progress' => 'กำลังพัฒนา', 'completed' => 'พัฒนาเสร็จสิ้น', 'canceled' => 'ยกเลิก'] as $status => $label)
         <div class="col-lg-3 mb-3"> <!-- Use col-lg-3 for 4 equal columns -->
             <div class="card">
@@ -110,6 +111,9 @@
             </div>
         </div>
         @endforeach
+        @else
+        <p class="text-center">ไม่มีข้อมูล</p>
+        @endif
     </div>
 
     @else
