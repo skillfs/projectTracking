@@ -13,8 +13,6 @@ class SoftwareController extends Controller
 
     public function index()
     {
-        $software = Software::all(); // Fetch all software requests (can be empty)
-        return view('home', compact('software'));
         return view('softwares.index', [
             'softwares' => Software::orderBy('created_at', 'desc')->paginate(self::PAGINATION_COUNT)
         ]);
