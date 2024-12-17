@@ -17,6 +17,7 @@
         </div>
     </nav>
 
+    @auth
     <!-- Summary Cards -->
     <div class="row text-center mb-4">
         @foreach(['pending' => 'รอหัวหน้าแผนก', 'approved by DH' => 'รอหัวหน้าทีมพัฒนา',
@@ -73,5 +74,11 @@
         <p class="text-center">ไม่มีข้อมูล</p>
         @endif
     </div>
+    @else
+    <!-- Guest Placeholder -->
+    <div class="alert alert-warning text-center">
+        กรุณาเข้าสู่ระบบเพื่อดูคำขอพัฒนาซอฟต์แวร์
+    </div>
+    @endauth
 </div>
 @endsection
