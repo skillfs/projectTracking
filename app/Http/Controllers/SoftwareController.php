@@ -13,7 +13,7 @@ class SoftwareController extends Controller
     const PAGINATION_COUNT = 10; // Default pagination count
 
     public function index()
-    {
+    {   
         return view('softwares.index', [
             'softwares' => Software::orderBy('created_at', 'desc')->paginate(self::PAGINATION_COUNT)
         ]);
@@ -75,12 +75,12 @@ class SoftwareController extends Controller
         $user = Auth::user();
 
         // Admin: See all software requests
-        if ($user->status === 'Admin') {
+        if ($user->role()->first()->role_name === 'Admin') {
             $softwares = Software::orderBy('created_at', 'desc')->get();
         }
         // Department Head: See requests matching department_id
-        elseif ($user->status === 'Department Head') {
-            $softwares = Software::where('department_id', $user->department_id)
+        elseif ($user->role()->first()->role_name === 'Department Head') {
+            $softwares = Software::where('department_id', $user->department)
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
