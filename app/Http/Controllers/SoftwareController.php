@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Software;
+use App\Models\Department;
 use App\Http\Requests\SaveSoftwareRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,14 +21,20 @@ class SoftwareController extends Controller
 
     public function create()
     {
-        return view('softwares.create');
+        $user = Auth::user();
+        $departments = Department::all(); // Fetch all departments
+
+        return view('softwares.create', [
+            'user' => $user,
+            'departments' => $departments,
+        ]);
     }
 
     public function store(SaveSoftwareRequest $request)
     {
         $software = Software::create($request->validated());
 
-        return redirect()->route('softwares.show', $software)
+        return redirect()->route('softwares.list', $software)
             ->with('status', 'Software Created Successfully');
     }
 

@@ -22,6 +22,9 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
+                <button onclick="window.history.back();" class="btn btn-secondary">
+                    &larr; กลับ
+                </button>
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="/images/logo.png" alt="App Logo" style="height: 30px; margin-right: 10px;">
                     {{ config('app.name', 'My Custom App') }}

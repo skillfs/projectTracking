@@ -22,14 +22,15 @@ class SaveSoftwareRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:191',
-            'tel' => 'required|min:10',
-            'software_name' => 'required|max:191',
-            'date' => 'required',
-            'problem' => 'required',
-            'purpose' => 'required|max:191',
-            'target' => 'nullable|min:3',
-            'status' => 'required'
+            'f_name' => 'required|string',
+            'l_name' => 'required|string',
+            'department_id' => 'required|exists:departments,department_id',
+            'tel' => 'required|digits:10',
+            'software_name' => 'required|string',
+            'problem' => 'required|string',
+            'purpose' => 'required|string',
+            'target' => 'required|string',
+            'date' => 'required|date',
         ];
     }
 }

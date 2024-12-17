@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SoftwareController;
 use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 Route::view('/', 'home');
 

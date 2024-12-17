@@ -1,64 +1,83 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-5">
-    <h3 class="mb-4">เพิ่มข้อมูลคำขอพัฒนาซอฟต์แวร์</h3>
+<div class="container">
+    <h2 class="text-center mb-4">เพิ่มข้อมูลคำขอพัฒนาซอฟต์แวร์</h2>
 
-    <!-- Request Form -->
-    <form method="POST" action="{{ route('softwares.store') }}">
+    <form action="{{ route('softwares.store') }}" method="POST">
         @csrf
-        <!-- Name, Department, Phone -->
         <div class="row mb-3">
+            <!-- First Name -->
             <div class="col-md-4">
-                <label class="form-label">ชื่อผู้ขอ <span class="text-danger">*</span></label>
-                <input type="text" name="f_name" class="form-control" placeholder="ชื่อ นามสกุล" required>
+                <label for="f_name" class="form-label">ชื่อ *</label>
+                <input type="text" name="f_name" id="f_name" class="form-control"
+                    value="{{ old('f_name', $user->f_name) }}" placeholder="ชื่อ" required readonly>
             </div>
+
+            <!-- Last Name -->
             <div class="col-md-4">
-                <label class="form-label">แผนก <span class="text-danger">*</span></label>
-                <input type="text" name="department_id" class="form-control" placeholder="แผนก" required>
+                <label for="l_name" class="form-label">นามสกุล *</label>
+                <input type="text" name="l_name" id="l_name" class="form-control"
+                    value="{{ old('l_name', $user->l_name) }}" placeholder="นามสกุล" required readonly>
             </div>
+
+            <!-- Department -->
             <div class="col-md-4">
-                <label class="form-label">เบอร์ติดต่อกลับ <span class="text-danger">*</span></label>
-                <input type="tel" name="tel" class="form-control" placeholder="เบอร์โทรติดต่อกลับ" required>
+                <label for="department_id" class="form-label">แผนก *</label>
+                <select name="department_id" id="department_id" class="form-control" required>
+                    <option value="" disabled selected>เลือกแผนก</option>
+                    @foreach($departments as $department)
+                    <option value="{{ $department->department_id }}"
+                        {{ $user->department == $department->department_id ? 'selected' : '' }}>
+                        {{ $department->department_name }}
+                    </option>
+                    @endforeach
+                </select>
             </div>
         </div>
 
-        <!-- System Name and Date -->
+        <!-- Contact and Date -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label class="form-label">ชื่อระบบ <span class="text-danger">*</span></label>
-                <input type="text" name="software_name" class="form-control" placeholder="ชื่อระบบ" required>
+                <label for="tel" class="form-label">เบอร์โทรติดต่อกลับ *</label>
+                <input type="text" name="tel" id="tel" class="form-control"
+                    value="{{ old('tel', $user->tel ?? '') }}" placeholder="เบอร์โทรติดต่อกลับ" required>
             </div>
             <div class="col-md-6">
-                <label class="form-label">วันที่ขอ <span class="text-danger">*</span></label>
-                <div class="input-group">
-                    <input type="date" name="date" class="form-control" required>
-                    <span class="input-group-text">
-                        <i class="bi bi-calendar"></i>
-                    </span>
-                </div>
+                <label for="date" class="form-label">วันที่ขอ *</label>
+                <input type="date" name="date" id="date" class="form-control"
+                    value="{{ old('date') }}" required>
             </div>
         </div>
 
-        <!-- Problem and Objectives -->
+        <!-- Software Name -->
         <div class="mb-3">
-            <label class="form-label">ปัญหาที่เกิดขึ้นจากระบบเดิม <span class="text-danger">*</span></label>
-            <textarea name="problem" class="form-control" rows="3" placeholder="ปัญหาที่เกิดขึ้นจากระบบเดิม" required></textarea>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">วัตถุประสงค์การพัฒนาระบบใหม่ <span class="text-danger">*</span></label>
-            <textarea name="purpose" class="form-control" rows="3" placeholder="วัตถุประสงค์การพัฒนาระบบใหม่" required></textarea>
+            <label for="software_name" class="form-label">ชื่อระบบ *</label>
+            <input type="text" name="software_name" id="software_name" class="form-control"
+                placeholder="ชื่อระบบ" required>
         </div>
 
-        <!-- Target Group -->
+        <!-- Problem -->
         <div class="mb-3">
-            <label class="form-label">กลุ่มเป้าหมายการใช้งาน <span class="text-danger">*</span></label>
-            <textarea name="target" class="form-control" rows="3" placeholder="กลุ่มเป้าหมายการใช้งาน" required></textarea>
+            <label for="problem" class="form-label">ปัญหาที่เกิดขึ้นจากระบบเดิม *</label>
+            <textarea name="problem" id="problem" rows="3" class="form-control" placeholder="ปัญหาที่เกิดขึ้นจากระบบเดิม" required></textarea>
+        </div>
+
+        <!-- Purpose -->
+        <div class="mb-3">
+            <label for="purpose" class="form-label">วัตถุประสงค์การพัฒนาระบบใหม่ *</label>
+            <textarea name="purpose" id="purpose" rows="3" class="form-control" placeholder="วัตถุประสงค์การพัฒนาระบบใหม่" required></textarea>
+        </div>
+
+        <!-- Target -->
+        <div class="mb-3">
+            <label for="target" class="form-label">กลุ่มเป้าหมายการใช้งาน *</label>
+            <textarea name="target" id="target" rows="2" class="form-control" placeholder="กลุ่มเป้าหมายการใช้งาน" required></textarea>
         </div>
 
         <!-- Buttons -->
         <div class="d-flex justify-content-end">
-            <a href="{{ route('softwares.list') }}" class="btn btn-danger me-2">ยกเลิก</a>
+            <a href="{{ route('home') }}" class="btn btn-danger me-2">ยกเลิก</a>
             <button type="submit" class="btn btn-success">ตกลง</button>
         </div>
     </form>

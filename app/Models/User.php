@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Role;
+use App\Models\Department;
 
 class User extends Authenticatable
 {
@@ -23,6 +26,17 @@ class User extends Authenticatable
         'l_name',
         'password',
     ];
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role', 'role_id');
+    }
+
+    // Relationship with Department table
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'department', 'department_id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,14 +59,6 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    /**
-     * Relationship to Department.
-     */
-    public function department()
-    {
-        return $this->belongsTo(Department::class, 'department_id', 'department_id');
     }
 
     /**

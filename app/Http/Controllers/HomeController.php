@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Software;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -25,7 +26,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $software = Auth::check() ? \App\Models\Software::all() : collect();
+        $user = Auth::user();
+
+        // Define software based on user role
+        if ($user->role->role_name === 'Admin') {
+            $software = Software::all();
+        } elseif ($user->role->role_name === 'Department Head') {
+            $software = Software::where('department_id', $user->department)->get();
+        } else { // Normal User
+            $software = Software::where('f_name', $user->f_name)
+                ->where('l_name', $user->l_name)
+                ->get();
+        }
+
         return view('home', compact('software'));
     }
 }
