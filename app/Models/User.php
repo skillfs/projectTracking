@@ -13,6 +13,17 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role', 'role_id');
+    }
+
+    // Relationship to Department table
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'department', 'department_id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,17 +37,6 @@ class User extends Authenticatable
         'l_name',
         'password',
     ];
-
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class, 'role', 'role_id');
-    }
-
-    // Relationship with Department table
-    public function department(): BelongsTo
-    {
-        return $this->belongsTo(Department::class, 'department', 'department_id');
-    }
 
     /**
      * The attributes that should be hidden for serialization.

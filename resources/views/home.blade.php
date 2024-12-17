@@ -76,7 +76,7 @@
     </div>
     @else
     <!-- Guest Placeholder -->
-    <div class="alert alert-warning text-center">
+    <div class="alert alert-warning text-center"> 
         กรุณาเข้าสู่ระบบเพื่อดูคำขอพัฒนาซอฟต์แวร์
     </div>
     @endauth

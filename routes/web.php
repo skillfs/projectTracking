@@ -62,3 +62,17 @@ Route::get('/department/dashboard', function () {
 Route::get('/user/dashboard', function () {
     return view('user.dashboard');
 })->middleware('auth')->name('user.dashboard');
+
+Route::get('/test-role', function () {
+    $user = Auth::user();
+
+    // Debugging the relationship
+    if ($user) {
+        dd([
+            'user' => $user,
+            'role' => $user->role()->first(), // Fetch Role model
+        ]);
+    } else {
+        return 'No user logged in';
+    }
+});

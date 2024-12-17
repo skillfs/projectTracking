@@ -28,12 +28,14 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        // Define software based on user role
-        if ($user->role->role_name === 'Admin') {
+        if ($user->role()->first() && $user->role()->first()->role_name === 'Admin') {
+            // Admin logic
             $software = Software::all();
-        } elseif ($user->role->role_name === 'Department Head') {
+        } elseif ($user->role()->first() && $user->role()->first()->role_name === 'Department Head') {
+            // Department Head logic
             $software = Software::where('department_id', $user->department)->get();
-        } else { // Normal User
+        } else {
+            // Normal User logic
             $software = Software::where('f_name', $user->f_name)
                 ->where('l_name', $user->l_name)
                 ->get();
