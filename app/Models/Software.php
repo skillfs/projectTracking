@@ -26,4 +26,21 @@ class Software extends Model
         'file',
         'date',
     ];
+
+    /**
+     * Relationship to Department.
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'department_id');
+    }
+
+    /**
+     * Relationship to Users.
+     * เชื่อมโยงผ่าน department_id
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class, 'department_id', 'department_id');
+    }
 }

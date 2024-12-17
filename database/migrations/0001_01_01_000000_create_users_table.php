@@ -11,6 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id('role_id');
+            $table->string('role_name');
+        });
+
+        Schema::create('departments', function (Blueprint $table) {
+            $table->id('department_id');
+            $table->string('department_name');
+        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('username');
@@ -18,7 +28,8 @@ return new class extends Migration
             $table->string('l_name');
             $table->string('status');
             $table->string('password');
-            $table->integer('department_id');
+            $table->foreignId('role')->references('role_id')->on('roles')->cascadeOnDelete();
+            $table->foreignId('department')->references('department_id')->on('departments')->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

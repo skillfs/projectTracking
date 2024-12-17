@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('software_id');
             $table->string('f_name', 191);
             $table->string('l_name', 191);
-            $table->string('department_id', 191);
+            $table->foreignId('department_id')->references('department_id')->on('departments')->cascadeOnDelete();
             $table->string('tel', 10);
             $table->string('software_name', 191);
             $table->text('problem');
@@ -28,6 +28,14 @@ return new class extends Migration
             $table->date('date');
             $table->timestamps();
         });
+
+        Schema::create('timelines', function (Blueprint $table) {
+            $table->id('timeline_id');
+            $table->foreignId('timeline_regist_number')->references('software_id')->on('softwares')->cascadeOnDelete();
+            $table->date('timeline_date');
+            $table->string('timeline_step');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -35,6 +43,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('software');
+        Schema::dropIfExists('softwares');
+        Schema::dropIfExists('timelines');
     }
 };
