@@ -13,7 +13,7 @@ class SoftwareController extends Controller
     const PAGINATION_COUNT = 10; // Default pagination count
 
     public function index()
-    {   
+    {
         return view('softwares.index', [
             'softwares' => Software::orderBy('created_at', 'desc')->paginate(self::PAGINATION_COUNT)
         ]);
@@ -45,7 +45,8 @@ class SoftwareController extends Controller
 
     public function edit(Software $software)
     {
-        return view('softwares.edit', compact('software'));
+        $departments = Department::all(); // Make sure you fetch departments
+        return view('softwares.edit', compact('software', 'departments'));
     }
 
     public function update(SaveSoftwareRequest $request, Software $software)
@@ -60,7 +61,7 @@ class SoftwareController extends Controller
     {
         $software->delete();
 
-        return redirect()->route('softwares.index')
+        return redirect()->route('softwares.list')
             ->with('status', 'Software Deleted Successfully');
     }
 
