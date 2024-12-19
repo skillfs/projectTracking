@@ -1,8 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+$user = Auth::user();
+$userRole = $user->role()->first() ? $user->role()->first()->role_name : '';
+// Conditions for displaying buttons
+// For normal user: can edit if status is 'pending' and not approved by DH
+$canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
+&& ($software->status === 'pending' && !$software->approved_by_dh);
+@endphp
+
 <div class="container">
-    <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold">รายละเอียดข้อมูลการพัฒนาซอฟต์แวร์</h4>
         <button type="button" class="btn btn-secondary" onclick="window.history.back();">
@@ -10,13 +18,11 @@
         </button>
     </div>
 
-    <!-- Software Details Section -->
     <div class="row">
-        <!-- Left Column: Main Details -->
         <div class="col-lg-9">
             <div class="card mb-4">
                 <div class="card-body">
-                    <!-- Row 1: Registration No., Software Name -->
+                    <!-- Software details -->
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <strong>เลขลงทะเบียน:</strong><br>
@@ -32,7 +38,6 @@
                         </div>
                     </div>
 
-                    <!-- Row 2: Requester Name, Department, Tel -->
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <strong>ชื่อผู้ขอ:</strong><br>
@@ -48,25 +53,21 @@
                         </div>
                     </div>
 
-                    <!-- Problem -->
                     <div class="mb-3">
                         <strong>ปัญหาที่เกิดขึ้นจากระบบเดิม:</strong><br>
                         {{ $software->problem ?? '-' }}
                     </div>
 
-                    <!-- Purpose -->
                     <div class="mb-3">
                         <strong>วัตถุประสงค์ที่ต้องการพัฒนาระบบใหม่:</strong><br>
                         {{ $software->purpose ?? '-' }}
                     </div>
 
-                    <!-- Target -->
                     <div class="mb-3">
                         <strong>กลุ่มเป้าหมายการใช้งาน:</strong><br>
                         {{ $software->target ?? '-' }}
                     </div>
 
-                    <!-- File -->
                     <div class="mb-3">
                         <strong>ไฟล์แนบ:</strong><br>
                         @if($software->file)
@@ -76,54 +77,18 @@
                         @endif
                     </div>
 
-                    <!-- Status Steps -->
+                    <!-- Status Display -->
                     <div class="mb-3">
-                        <strong>ขั้นตอน:</strong><br>
-                        <div class="d-flex align-items-center justify-content-around mt-3">
-                            <!-- Example steps: adjust logic & styling as needed -->
-                            <div class="text-center">
-                                <i class="bi bi-x-circle {{ $software->status === 'canceled' ? 'text-danger' : 'text-muted' }}"></i><br>
-                                ยกเลิก
-                            </div>
-                            <div class="text-center">
-                                <i class="bi bi-person-check {{ $software->status === 'approved by DH' || $software->approved_by_dh ? 'text-primary' : 'text-muted' }}"></i><br>
-                                หัวหน้าแผนก
-                            </div>
-                            <div class="text-center">
-                                <i class="bi bi-person-badge {{ $software->status === 'approved by admin' || $software->approved_by_admin ? 'text-primary' : 'text-muted' }}"></i><br>
-                                หัวหน้าทีมพัฒนา
-                            </div>
-                            <div class="text-center">
-                                <i class="bi bi-hourglass-split {{ $software->status === 'queued' ? 'text-primary' : 'text-muted' }}"></i><br>
-                                รอคิว
-                            </div>
-                            <div class="text-center">
-                                <i class="bi bi-tools {{ $software->status === 'in progress' ? 'text-primary' : 'text-muted' }}"></i><br>
-                                กำลังพัฒนา
-                            </div>
-                            <div class="text-center">
-                                <i class="bi bi-check-circle {{ $software->status === 'completed' ? 'text-success' : 'text-muted' }}"></i><br>
-                                เสร็จ
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Development Timeframe -->
-                    <div class="mb-3">
-                        <strong>ระยะเวลาพัฒนา:</strong><br>
-                        <!-- Replace with logic to determine start and end from timeline or separate fields -->
-                        เริ่มต้น 1 สิงหาคม 2567 ถึงวันที่ 31 ตุลาคม 2567
+                        <strong>สถานะปัจจุบัน:</strong> {{ $software->status }}
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Right Column: Timeline -->
+        <!-- Timeline Column -->
         <div class="col-lg-3">
             <div class="card">
-                <div class="card-header bg-dark text-white">
-                    ไทม์ไลน์การดำเนินงาน
-                </div>
+                <div class="card-header bg-dark text-white">ไทม์ไลน์การดำเนินงาน</div>
                 <div class="card-body">
                     @if($software->timelines && $software->timelines->count() > 0)
                     <ul class="list-unstyled">
@@ -144,13 +109,50 @@
         </div>
     </div>
 
-    <!-- Action Buttons -->
+    <!-- Action Buttons based on Role and Status -->
     <div class="d-flex justify-content-end mt-4">
+        @if($userRole === 'Department Head')
+        @if($software->status === 'pending')
+        <!-- DH Approve/Reject -->
+        <form action="{{ route('softwares.update', $software->software_id) }}" method="POST" class="me-2">
+            @csrf
+            @method('PATCH')
+            <input type="hidden" name="status" value="approved by DH">
+            <button type="submit" class="btn btn-success">อนุมัติ</button>
+        </form>
+        <form action="{{ route('softwares.update', $software->software_id) }}" method="POST">
+            @csrf
+            @method('PATCH')
+            <input type="hidden" name="status" value="canceled">
+            <button type="submit" class="btn btn-danger">ปฏิเสธ</button>
+        </form>
+        @endif
+        @elseif($userRole === 'Admin')
+        @if($software->approved_by_dh && $software->status === 'approved by DH')
+        <!-- Admin Approve/Reject -->
+        <form action="{{ route('softwares.update', $software->software_id) }}" method="POST" class="me-2">
+            @csrf
+            @method('PATCH')
+            <input type="hidden" name="status" value="approved by admin">
+            <button type="submit" class="btn btn-success">อนุมัติ</button>
+        </form>
+        <form action="{{ route('softwares.update', $software->software_id) }}" method="POST">
+            @csrf
+            @method('PATCH')
+            <input type="hidden" name="status" value="canceled">
+            <button type="submit" class="btn btn-danger">ปฏิเสธ</button>
+        </form>
+        @elseif($software->approved_by_admin)
+        <!-- After admin has approved, show Edit button instead -->
         <a href="{{ route('softwares.edit', $software->software_id) }}" class="btn btn-warning me-2">แก้ไข</a>
-        <!-- "ลบ" Button triggers the modal -->
+        @endif
+        @elseif($canEdit)
+        <!-- Normal User Edit/Delete if pending and not approved by DH -->
+        <a href="{{ route('softwares.edit', $software->software_id) }}" class="btn btn-warning me-2">แก้ไข</a>
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
             ลบ
         </button>
+        @endif
     </div>
 </div>
 

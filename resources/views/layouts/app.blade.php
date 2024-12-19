@@ -26,9 +26,9 @@
                 <button onclick="window.history.back();" class="btn btn-secondary">
                     &larr; กลับ
                 </button>
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     <img src="/images/logo.png" alt="App Logo" style="height: 30px; margin-right: 10px;">
-                    {{ config('app.name', 'My Custom App') }}
+                    {{ __('Tracking') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

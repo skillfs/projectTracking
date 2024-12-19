@@ -49,13 +49,59 @@ class SoftwareController extends Controller
         return view('softwares.edit', compact('software', 'departments'));
     }
 
-    public function update(SaveSoftwareRequest $request, Software $software)
+    public function update(Request $request, Software $software)
     {
-        $software->update($request->validated());
+        $user = Auth::user();
+        $userRole = $user->role()->first() ? $user->role()->first()->role_name : '';
+        $newStatus = $request->input('status');
 
-        return redirect()->route('softwares.show', $software)
-            ->with('status', 'Software Updated Successfully');
+        // If an approval/rejection action is being taken
+        if ($newStatus === 'canceled') {
+            // Cancel requested software
+            $software->status = 'canceled';
+            $software->approved_by_dh = false;
+            $software->approved_by_admin = false;
+            $software->save();
+
+            return redirect()->route('softwares.list')->with('status', 'Request Canceled');
+        }
+
+        if ($newStatus === 'approved by DH' && $userRole === 'Department Head') {
+            $software->status = 'approved by DH';
+            $software->approved_by_dh = true;
+            $software->save();
+
+            return redirect()->route('softwares.show', $software->software_id)->with('status', 'DH Approved Successfully');
+        }
+
+        if ($newStatus === 'approved by admin' && $userRole === 'Admin' && $software->approved_by_dh) {
+            $software->status = 'queued'; // next stage after admin approval
+            $software->approved_by_admin = true;
+            $software->save();
+
+            return redirect()->route('softwares.show', $software->software_id)->with('status', 'Admin Approved Successfully');
+        }
+
+        // If we reach this point, it means there's no 'newStatus' handling, so we assume it's a normal update.
+        // For normal updates, use SaveSoftwareRequest for validation
+        $validated = $request->validate([
+            'f_name' => 'required|string',
+            'l_name' => 'required|string',
+            'department_id' => 'required|exists:departments,department_id',
+            'tel' => 'required|digits:10',
+            'status' => 'nullable|string',
+            'software_name' => 'required|string',
+            'problem' => 'required|string',
+            'purpose' => 'required|string',
+            'target' => 'required|string',
+            'date' => 'required|date',
+            // If you want to allow updating the file and status here, add rules for them as well
+        ]);
+
+        $software->update($validated);
+        return redirect()->route('softwares.show', $software->software_id)->with('status', 'Software Updated Successfully');
     }
+
 
     public function destroy(Software $software)
     {
