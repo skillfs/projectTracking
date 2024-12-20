@@ -25,7 +25,6 @@ class SaveSoftwareRequest extends FormRequest
             'f_name' => 'required|string',
             'l_name' => 'required|string',
             'department_id' => 'required|exists:departments,department_id',
-            'status' => 'nullable|string',
             'tel' => 'required|digits:10',
             'software_name' => 'required|string',
             'problem' => 'required|string',

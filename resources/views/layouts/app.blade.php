@@ -17,20 +17,49 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <style>
+        /* Example styling for the white circle icon */
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .profile-icon img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app">
+        <!-- Navbar -->
+        @php
+        $user = Auth::user();
+        $userRole = $user && $user->role()->first() ? $user->role()->first()->role_name : '';
+        @endphp
+
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
-                <button onclick="window.history.back();" class="btn btn-secondary">
+                <button onclick="window.history.back();" class="btn btn-secondary me-2">
                     &larr; กลับ
                 </button>
-                <a class="navbar-brand" href="{{ url('/home') }}">
+
+                <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="/images/logo.png" alt="App Logo" style="height: 30px; margin-right: 10px;">
-                    {{ __('Tracking') }}
+                    {{ config('app.name', 'My Custom App') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -38,16 +67,37 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/about">{{ __('About Us') }}</a>
+                            <a class="nav-link text-white" href="{{ url('/home') }}">หน้าแรก</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/contact">{{ __('Contact') }}</a>
+                            <a class="nav-link text-white" href="{{ route('softwares.list') }}">คำขอพัฒนา</a>
                         </li>
+
+                        <!-- Show only if user is Department Head -->
+                        @if($userRole === 'Department Head')
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('softwares.dhApprovals') }}">
+                                หัวหน้าแผนก
+                            </a>
+                        </li>
+                        @endif
+
+                        <!-- Show only if user is Admin -->
+                        @if($userRole === 'Admin')
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('softwares.adminApprovals') }}">
+                                หัวหน้าทีมพัฒนา
+                            </a>
+                        </li>
+                        @endif
+
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
+                    <!-- Right Side Of Navbar (Notification Icon and Profile Dropdown) -->
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item me-3">
+                            <i class="bi bi-bell fs-4 text-white"></i>
+                        </li>
                         @guest
                         @if (Route::has('login'))
                         <li class="nav-item">
@@ -62,14 +112,21 @@
                         @endif
                         @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <div class="profile-icon">
+                                    <span class="fw-bold">{{ strtoupper(substr(Auth::user()->f_name, 0, 1)) }}</span>
+                                </div>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <!-- My Requests -->
+                                <a class="dropdown-item" href="{{ route('softwares.myRequests') }}">คำขอของฉัน</a>
+
+                                <!-- Logout -->
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                     document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
 

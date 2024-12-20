@@ -4,10 +4,13 @@
 @php
 $user = Auth::user();
 $userRole = $user->role()->first() ? $user->role()->first()->role_name : '';
+
 // Conditions for displaying buttons
-// For normal user: can edit if status is 'pending' and not approved by DH
+// For normal user: can edit if they are the owner of the request,
+// the status is 'pending', and not approved by DH.
 $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
-&& ($software->status === 'pending' && !$software->approved_by_dh);
+&& ($software->status === 'pending' && !$software->approved_by_dh)
+&& ($software->f_name === $user->f_name && $software->l_name === $user->l_name);
 @endphp
 
 <div class="container">
@@ -77,7 +80,6 @@ $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
                         @endif
                     </div>
 
-                    <!-- Status Display -->
                     <div class="mb-3">
                         <strong>สถานะปัจจุบัน:</strong> {{ $software->status }}
                     </div>
@@ -147,7 +149,7 @@ $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
         <a href="{{ route('softwares.edit', $software->software_id) }}" class="btn btn-warning me-2">แก้ไข</a>
         @endif
         @elseif($canEdit)
-        <!-- Normal User Edit/Delete if pending and not approved by DH -->
+        <!-- Normal User Edit/Delete if pending and not approved by DH and is their own request -->
         <a href="{{ route('softwares.edit', $software->software_id) }}" class="btn btn-warning me-2">แก้ไข</a>
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
             ลบ

@@ -18,6 +18,18 @@ Route::controller(SoftwareController::class)
             ->name('list')
             ->middleware('auth'); // Protect this route with auth middleware
 
+        Route::get('/dh-approvals', 'listRequests')
+            ->name('dhApprovals')
+            ->middleware('auth');
+
+        Route::get('/admin-approvals', 'listRequests')
+            ->name('adminApprovals')
+            ->middleware('auth');
+
+        Route::get('/my-requests', 'listRequests')
+            ->name('myRequests')
+            ->middleware('auth');
+
         Route::get('/', 'index')
             ->name('index');
 
@@ -46,33 +58,3 @@ Route::controller(SoftwareController::class)
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth');
-
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware('auth')->name('admin.dashboard');
-
-Route::get('/department/dashboard', function () {
-    return view('department.dashboard');
-})->middleware('auth')->name('department.dashboard');
-
-Route::get('/user/dashboard', function () {
-    return view('user.dashboard');
-})->middleware('auth')->name('user.dashboard');
-
-Route::get('/test-role', function () {
-    $user = Auth::user();
-
-    // Debugging the relationship
-    if ($user) {
-        dd([
-            'user' => $user,
-            'role' => $user->role()->first(), // Fetch Role model
-        ]);
-    } else {
-        return 'No user logged in';
-    }
-});

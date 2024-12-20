@@ -117,29 +117,35 @@ class SoftwareController extends Controller
      * - Department Head: See requests with matching department_id.
      * - Normal User: See only their requests.
      */
-    public function listRequests()
+    public function listRequests(Request $request)
     {
         $user = Auth::user();
+        $userRole = $user && $user->role()->first() ? $user->role()->first()->role_name : '';
+        // $userDepartmentId = $user->getAttribute('department');
+        $routeName = $request->route()->getName();
 
-        // Admin: See all software requests
-        if ($user->role()->first()->role_name === 'Admin') {
-            $softwares = Software::orderBy('created_at', 'desc')->get();
-        }
-        // Department Head: See requests matching department_id
-        elseif ($user->role()->first()->role_name === 'Department Head') {
-            $softwares = Software::where('department_id', $user->department)
-                ->orderBy('created_at', 'desc')
-                ->get();
-        }
-        // Normal User: See only their own requests
-        else {
-            $softwares = Software::where('f_name', $user->f_name)
-                ->where('l_name', $user->l_name)
-                ->orderBy('created_at', 'desc')
-                ->get();
+        // Default: show all requests
+        $query = \App\Models\Software::query();
+
+        // Check which route is being accessed
+        if ($routeName === 'softwares.dhApprovals' && $userRole === 'Department Head') {
+            // Filter requests waiting for DH approval
+            // e.g., all software that have 'pending' status
+            $query->where('status', 'pending')
+                ->where('department_id', $user->department);
+        } elseif ($routeName === 'softwares.adminApprovals' && $userRole === 'Admin') {
+            // Filter requests waiting for Admin approval
+            // e.g., all software that have 'approved by DH' status
+            $query->whereIn('status', ['approved by DH', 'queued', 'in progress']);
+        } elseif ($routeName === 'softwares.myRequests') {
+            // My Requests (filter by logged-in user’s name)
+            $query->where('f_name', $user->f_name)
+                ->where('l_name', $user->l_name);
         }
 
-        // Return the view with filtered software requests
+        // Order by newest first
+        $softwares = $query->orderBy('created_at', 'desc')->get();
+
         return view('softwares.list', compact('softwares'));
     }
 }

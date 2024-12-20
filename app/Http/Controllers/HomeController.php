@@ -26,21 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-
-        if ($user->role()->first() && $user->role()->first()->role_name === 'Admin') {
-            // Admin logic
-            $software = Software::all();
-        } elseif ($user->role()->first() && $user->role()->first()->role_name === 'Department Head') {
-            // Department Head logic
-            $software = Software::where('department_id', $user->department)->get();
-        } else {
-            // Normal User logic
-            $software = Software::where('f_name', $user->f_name)
-                ->where('l_name', $user->l_name)
-                ->get();
-        }
-
+        $software = \App\Models\Software::all();
         return view('home', compact('software'));
     }
 }
