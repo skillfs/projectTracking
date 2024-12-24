@@ -15,7 +15,6 @@ class Timeline extends Model
         'timeline_regist_number',
         'timeline_date',
         'timeline_step',
-        'recorded_by'
     ];
 
     public function software()

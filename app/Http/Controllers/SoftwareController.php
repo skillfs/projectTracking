@@ -148,4 +148,21 @@ class SoftwareController extends Controller
 
         return view('softwares.list', compact('softwares'));
     }
+
+    public function updateDuration(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'timeline_start' => 'required|date',
+            'timeline_end' => 'required|date|after_or_equal:timeline_start',
+        ]);
+
+        $software = Software::findOrFail($id);
+
+        $software->update([
+            'timeline_start' => $validatedData['timeline_start'],
+            'timeline_end' => $validatedData['timeline_end'],
+        ]);
+
+        return redirect()->back()->with('success', 'Timeline duration updated successfully!');
+    }
 }

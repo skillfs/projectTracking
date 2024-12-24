@@ -87,7 +87,7 @@ $routeName = request()->route()->getName();
                 @elseif($software->status === 'queued' || $software->status === 'in progress')
                 <!-- Admin can now edit these requests -->
                 <td>
-                    <a href="{{ route('softwares.edit', $software->software_id) }}" class="btn btn-warning btn-sm">แก้ไข</a>
+                    <a href="{{ route('timelines.edit', $software->software_id) }}" class="btn btn-warning btn-sm">แก้ไข</a>
                 </td>
                 @else
                 <!-- For other statuses that appear here, no action available -->

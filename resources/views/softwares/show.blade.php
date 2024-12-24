@@ -144,9 +144,8 @@ $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
             <input type="hidden" name="status" value="canceled">
             <button type="submit" class="btn btn-danger">ปฏิเสธ</button>
         </form>
-        @elseif($software->approved_by_admin)
-        <!-- After admin has approved, show Edit button instead -->
-        <a href="{{ route('softwares.edit', $software->software_id) }}" class="btn btn-warning me-2">แก้ไข</a>
+        @elseif($software->approved_by_admin || $software->status === 'queued' || $software->status === 'in progress')
+        <a href="{{ route('timelines.edit', $software->software_id) }}" class="btn btn-warning me-2">แก้ไข</a>
         @endif
         @elseif($canEdit)
         <!-- Normal User Edit/Delete if pending and not approved by DH and is their own request -->

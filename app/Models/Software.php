@@ -21,10 +21,17 @@ class Software extends Model
         'software_name',
         'problem',
         'target',
+        'timeline_start',
+        'timeline_end',
         'purpose',
         'status',
         'file',
         'date',
+    ];
+
+    protected $casts = [
+        'timeline_start' => 'date',
+        'timeline_end' => 'date',
     ];
 
     /**

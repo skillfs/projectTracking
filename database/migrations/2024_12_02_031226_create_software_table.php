@@ -26,6 +26,8 @@ return new class extends Migration
             $table->boolean('approved_by_admin')->default(false);
             $table->string('file')->nullable();
             $table->date('date');
+            $table->date('timeline_start')->nullable();
+            $table->date('timeline_end')->nullable();
             $table->timestamps();
         });
 
@@ -34,6 +36,8 @@ return new class extends Migration
             $table->foreignId('timeline_regist_number')->references('software_id')->on('softwares')->cascadeOnDelete();
             $table->date('timeline_date');
             $table->string('timeline_step');
+            // $table->date('timeline_start');
+            // $table->date('timeline_end');
             $table->timestamps();
         });
     }
