@@ -53,7 +53,7 @@
                     &larr; กลับ
                 </button>
 
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     <img src="/images/logo.png" alt="App Logo" style="height: 30px; margin-right: 10px;">
                     {{ config('app.name', 'My Custom App') }}
                 </a>
@@ -95,9 +95,6 @@
 
                     <!-- Right Side Of Navbar (Notification Icon and Profile Dropdown) -->
                     <ul class="navbar-nav ms-auto align-items-center">
-                        <li class="nav-item me-3">
-                            <i class="bi bi-bell fs-4 text-white"></i>
-                        </li>
                         @guest
                         @if (Route::has('login'))
                         <li class="nav-item">
