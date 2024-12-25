@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h2 class="text-center mb-4">เพิ่มข้อมูลคำขอพัฒนาซอฟต์แวร์</h2>
+    <div class="container">
+        <h2 class="text-center mb-4">เพิ่มข้อมูลคำขอพัฒนาซอฟต์แวร์</h2>
 
     <form action="{{ route('softwares.store') }}" method="POST" enctype="multipart/form-data">
         @csrf

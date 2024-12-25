@@ -90,9 +90,6 @@
 
                     <!-- Right Side Of Navbar (Notification Icon and Profile Dropdown) -->
                     <ul class="navbar-nav ms-auto align-items-center">
-                        <li class="nav-item me-3">
-                            <i class="bi bi-bell fs-4 text-white"></i>
-                        </li>
                         @guest
                         @if (Route::has('login'))
                         <li class="nav-item">

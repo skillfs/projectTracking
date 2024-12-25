@@ -4,8 +4,7 @@
 <div class="container">
     <h2 class="text-center mb-4">แก้ไขข้อมูลคำขอพัฒนาซอฟต์แวร์ (Edit Software)</h2>
 
-    {{-- Main Edit Form (AJAX submission) --}}
-    <form id="updateSoftwareForm" enctype="multipart/form-data">
+    <form action="{{ route('softwares.update', $software->software_id) }}" method="POST">
         @csrf
         @method('PATCH')
 
