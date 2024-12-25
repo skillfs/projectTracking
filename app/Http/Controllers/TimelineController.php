@@ -50,20 +50,28 @@ class TimelineController extends Controller
     {
         $user = Auth::user();
 
-        $request->validate([
+        $validatedData = $request->validate([
             'timeline_date' => 'required|date',
             'timeline_step' => 'required|string',
+            'other_timeline_step' => 'nullable|string', // Only required if "Other" is selected
         ]);
 
+        // Determine the correct timeline step
+        $timelineStep = $validatedData['timeline_step'];
+        if ($timelineStep === 'Other' && $request->filled('other_timeline_step')) {
+            $timelineStep = $request->input('other_timeline_step'); // Use the custom value
+        }
+
+        // Create a new timeline entry
         Timeline::create([
             'timeline_regist_number' => $software->software_id,
-            'timeline_date' => $request->timeline_date,
-            'timeline_step' => $request->timeline_step,
-            // 'recorded_by' => $user->f_name . ' ' . $user->l_name,
+            'timeline_date' => $validatedData['timeline_date'],
+            'timeline_step' => $timelineStep, // Use the correct timeline step (predefined or custom)
+            'recorded_by' => $user->f_name . ' ' . $user->l_name,
         ]);
 
-        // Update software status
-        if ($request->timeline_step === 'Complete') {
+        // Update the software status
+        if ($timelineStep === 'Complete') {
             $software->status = 'completed';
         } else {
             $software->status = 'in progress';
@@ -74,6 +82,7 @@ class TimelineController extends Controller
             ->with('status', 'Timeline entry added successfully');
     }
 
+
     public function update(Request $request, Timeline $timeline)
     {
         $validatedData = $request->validate([
@@ -81,9 +90,8 @@ class TimelineController extends Controller
             'timeline_step' => 'required|string',
         ]);
 
-        // Check if "Other" was selected and add custom input if provided
         if ($request->timeline_step === 'Other' && $request->has('other_timeline_step')) {
-            $validatedData['timeline_step'] = $request->other_timeline_step;
+            $validatedData['timeline_step'] = $request->other_timeline_step; // Use the custom value
         }
 
         $timeline->update($validatedData);
@@ -91,5 +99,19 @@ class TimelineController extends Controller
         // Redirect to the timelines.edit page for the associated software
         return redirect()->route('timelines.edit', $timeline->timeline_regist_number)
             ->with('status', 'Timeline updated successfully!');
+    }
+
+    public function destroy(Timeline $timeline)
+    {
+        // Ensure only Admins can delete timelines
+        $user = Auth::user();
+        $userRole = $user->role()->first() ? $user->role()->first()->role_name : '';
+        if ($userRole !== 'Admin') {
+            abort(403, 'Unauthorized');
+        }
+
+        $timeline->delete();
+
+        return redirect()->back()->with('status', 'Timeline entry deleted successfully!');
     }
 }

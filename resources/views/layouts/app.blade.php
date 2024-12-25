@@ -53,11 +53,6 @@
                     &larr; กลับ
                 </button>
 
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="/images/logo.png" alt="App Logo" style="height: 30px; margin-right: 10px;">
-                    {{ config('app.name', 'My Custom App') }}
-                </a>
-
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -145,34 +140,7 @@
             @yield('content')
         </main>
     </div>
-    <!-- <script>
-        document.getElementById('timeline_step').addEventListener('change', function() {
-            const otherStepInput = document.getElementById('otherStepInput');
-            const otherTimelineStep = document.getElementById('other_timeline_step');
-
-            if (this.value === 'Other') {
-                otherStepInput.style.display = 'block';
-                otherTimelineStep.setAttribute('required', 'required');
-            } else {
-                otherStepInput.style.display = 'none';
-                otherTimelineStep.removeAttribute('required');
-            }
-        });
-    </script> -->
-    <script>
-        document.getElementById('timeline_step').addEventListener('change', function() {
-            const otherStepInput = document.getElementById('otherStepInput');
-            const otherTimelineStep = document.getElementById('other_timeline_step');
-
-            if (this.value === 'Other') {
-                otherStepInput.style.display = 'block';
-                otherTimelineStep.setAttribute('required', 'required');
-            } else {
-                otherStepInput.style.display = 'none';
-                otherTimelineStep.removeAttribute('required');
-            }
-        });
-    </script>
+    @yield('scripts')
 </body>
 
 </html>

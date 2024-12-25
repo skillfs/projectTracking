@@ -32,6 +32,7 @@ class Software extends Model
     protected $casts = [
         'timeline_start' => 'date',
         'timeline_end' => 'date',
+        'file' => 'array',
     ];
 
     /**
@@ -49,5 +50,10 @@ class Software extends Model
     public function users()
     {
         return $this->hasMany(User::class, 'department_id', 'department_id');
+    }
+
+    public function uploadedFiles()
+    {
+        return $this->hasMany(UploadedFile::class, 'software_id', 'software_id'); // Specify foreign key and local key
     }
 }

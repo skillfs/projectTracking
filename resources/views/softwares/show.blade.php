@@ -5,15 +5,20 @@
 $user = Auth::user();
 $userRole = $user->role()->first() ? $user->role()->first()->role_name : '';
 
-// Conditions for displaying buttons
 // For normal user: can edit if they are the owner of the request,
 // the status is 'pending', and not approved by DH.
-$canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
-&& ($software->status === 'pending' && !$software->approved_by_dh)
-&& ($software->f_name === $user->f_name && $software->l_name === $user->l_name);
+$canEdit = (
+$userRole !== 'Admin' &&
+$userRole !== 'Department Head' &&
+$software->status === 'pending' &&
+!$software->approved_by_dh &&
+$software->f_name === $user->f_name &&
+$software->l_name === $user->l_name
+);
 @endphp
 
 <div class="container">
+    {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold">รายละเอียดข้อมูลการพัฒนาซอฟต์แวร์</h4>
         <button type="button" class="btn btn-secondary" onclick="window.history.back();">
@@ -21,11 +26,13 @@ $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
         </button>
     </div>
 
+    {{-- Main Content Row --}}
     <div class="row">
+        {{-- Software Details --}}
         <div class="col-lg-9">
             <div class="card mb-4">
                 <div class="card-body">
-                    <!-- Software details -->
+                    {{-- Row 1 --}}
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <strong>เลขลงทะเบียน:</strong><br>
@@ -41,6 +48,7 @@ $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
                         </div>
                     </div>
 
+                    {{-- Row 2 --}}
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <strong>ชื่อผู้ขอ:</strong><br>
@@ -71,33 +79,57 @@ $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
                         {{ $software->target ?? '-' }}
                     </div>
 
+                    {{-- Attached Files --}}
+                    @php
+                    $files = $software->file ? json_decode($software->file, true) : [];
+                    @endphp
                     <div class="mb-3">
-                        <strong>ไฟล์แนบ:</strong><br>
-                        @if($software->file)
-                        <a href="{{ asset('storage/' . $software->file) }}" target="_blank">ดาวน์โหลดไฟล์แนบ</a>
-                        @else
-                        ไม่มีไฟล์แนบ
-                        @endif
+                        <strong>ไฟล์แนบ:</strong>
+                        <ul>
+                            @if($uploadedFiles->count() > 0)
+                            @foreach($uploadedFiles as $file)
+                            <li>
+                                <a href="{{ asset('storage/' . $file->path) }}" target="_blank">
+                                    {{ $file->original_name }}
+                                </a>
+                            </li>
+                            @endforeach
+                            @else
+                            <li class="text-muted">ไม่มีไฟล์แนบ</li>
+                            @endif
+                        </ul>
                     </div>
 
+                    {{-- Current Status --}}
                     <div class="mb-3">
                         <strong>สถานะปัจจุบัน:</strong> {{ $software->status }}
+                    </div>
+
+                    {{-- Development Timeline --}}
+                    <div class="mb-3">
+                        <strong>ระยะเวลาพัฒนา:</strong><br>
+                        @if($software->timeline_start && $software->timeline_end)
+                        เริ่มวันที่ {{ \Carbon\Carbon::parse($software->timeline_start)->format('d F Y') }}
+                        ถึง {{ \Carbon\Carbon::parse($software->timeline_end)->format('d F Y') }}
+                        @else
+                        <span class="text-muted">ยังไม่ได้กำหนดระยะเวลาพัฒนา</span>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Timeline Column -->
+        {{-- Timeline Column --}}
         <div class="col-lg-3">
             <div class="card">
                 <div class="card-header bg-dark text-white">ไทม์ไลน์การดำเนินงาน</div>
                 <div class="card-body">
-                    @if($software->timelines && $software->timelines->count() > 0)
+                    @if($timelines->count() > 0)
                     <ul class="list-unstyled">
-                        @foreach($software->timelines as $timeline)
+                        @foreach($timelines as $timeline)
                         <li class="mb-3">
                             <div class="fw-bold">
-                                {{ \Carbon\Carbon::parse($timeline->timeline_date)->format('d F Y') }}
+                                {{ \Carbon\Carbon::parse($timeline->timeline_date)->format('d M Y') }}
                             </div>
                             <div>{{ $timeline->timeline_step }}</div>
                         </li>
@@ -111,7 +143,7 @@ $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
         </div>
     </div>
 
-    <!-- Action Buttons based on Role and Status -->
+    {{-- Action Buttons based on Role and Status --}}
     <div class="d-flex justify-content-end mt-4">
         @if($userRole === 'Department Head')
         @if($software->status === 'pending')
@@ -148,9 +180,13 @@ $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
         <a href="{{ route('timelines.edit', $software->software_id) }}" class="btn btn-warning me-2">แก้ไข</a>
         @endif
         @elseif($canEdit)
-        <!-- Normal User Edit/Delete if pending and not approved by DH and is their own request -->
+        <!-- Normal User Edit/Delete if pending/not approved by DH -->
         <a href="{{ route('softwares.edit', $software->software_id) }}" class="btn btn-warning me-2">แก้ไข</a>
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+        <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteModal">
             ลบ
         </button>
         @endif
@@ -165,14 +201,23 @@ $canEdit = ($userRole !== 'Admin' && $userRole !== 'Department Head')
                 <h5 class="mb-4">คุณยืนยันที่จะลบหรือไม่</h5>
                 <div class="d-flex justify-content-center gap-3">
                     <!-- Close button for modal -->
-                    <button type="button" class="btn" style="background-color: #ffcccc; color: #b30000;" data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn"
+                        style="background-color: #ffcccc; color: #b30000;"
+                        data-bs-dismiss="modal">
                         ยกเลิก
                     </button>
                     <!-- Confirm delete button triggers form submission -->
-                    <form action="{{ route('softwares.destroy', $software->software_id) }}" method="POST">
+                    <form
+                        action="{{ route('softwares.destroy', $software->software_id) }}"
+                        method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn" style="background-color: #ccffcc; color: #009900;">
+                        <button
+                            type="submit"
+                            class="btn"
+                            style="background-color: #ccffcc; color: #009900;">
                             ตกลง
                         </button>
                     </form>

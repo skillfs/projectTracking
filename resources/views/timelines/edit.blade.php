@@ -27,20 +27,18 @@
                     <tr>
                         <th>วัน/เดือน/ปี</th>
                         <th>รายละเอียดการพัฒนา</th>
-                        <th>ผู้ลงข้อมูล</th>
+                        <th>ผู้บันทึก</th>
                         <th>ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($timelines as $timeline)
                     <tr>
-                        <td>{{ $timeline->timeline_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($timeline->timeline_date)->format('d F Y') }}</td>
                         <td>{{ $timeline->timeline_step }}</td>
-                        <td>{{ '-' }}</td>
+                        <td>{{ $timeline->recorded_by ?? '-' }}</td>
                         <td>
-                            <!-- Edit Button -->
                             <a href="{{ route('timelines.editTimeline', $timeline->timeline_id) }}" class="btn btn-warning btn-sm">แก้ไข</a>
-                            <!-- Delete Action -->
                             <form action="{{ route('timelines.destroy', $timeline->timeline_id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
@@ -48,7 +46,6 @@
                             </form>
                         </td>
                     </tr>
-
                     @empty
                     <tr>
                         <td colspan="4" class="text-center">ไม่มีข้อมูล</td>
@@ -71,12 +68,12 @@
                         <option value="พัฒนาโปรแกรม">พัฒนาโปรแกรม</option>
                         <option value="ทดสอบระบบ">ทดสอบระบบ</option>
                         <option value="Complete">Complete</option>
-                        <option value="Other">Other (Specify Below)</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
                 <div class="mb-3" id="otherStepInput" style="display: none;">
                     <label for="other_timeline_step" class="form-label">รายละเอียดเพิ่มเติม *</label>
-                    <textarea name="timeline_step" id="other_timeline_step" class="form-control" rows="3" placeholder="กรอกรายละเอียดเพิ่มเติม"></textarea>
+                    <textarea name="other_timeline_step" id="other_timeline_step" class="form-control" rows="3" placeholder="กรอกรายละเอียดเพิ่มเติม"></textarea>
                 </div>
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-success me-2">เพิ่ม</button>
@@ -93,11 +90,15 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="timeline_start" class="form-label">วันเริ่มต้นพัฒนา *</label>
-                        <input type="date" name="timeline_start" id="timeline_start" class="form-control" value="{{ $software->timeline_start }}" required>
+                        <input type="date" name="timeline_start" id="timeline_start"
+                            class="form-control"
+                            value="{{ old('timeline_start', $software->timeline_start) }}" required>
                     </div>
                     <div class="col-md-6">
                         <label for="timeline_end" class="form-label">วันสิ้นสุดการพัฒนา *</label>
-                        <input type="date" name="timeline_end" id="timeline_end" class="form-control" value="{{ $software->timeline_end }}" required>
+                        <input type="date" name="timeline_end" id="timeline_end"
+                            class="form-control"
+                            value="{{ old('timeline_end', $software->timeline_end) }}" required>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
@@ -108,4 +109,21 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.getElementById('timeline_step').addEventListener('change', function() {
+        const otherStepInput = document.getElementById('otherStepInput');
+        const otherTimelineStep = document.getElementById('other_timeline_step');
+
+        if (this.value === 'Other') {
+            otherStepInput.style.display = 'block';
+            otherTimelineStep.setAttribute('required', 'required');
+        } else {
+            otherStepInput.style.display = 'none';
+            otherTimelineStep.removeAttribute('required');
+        }
+    });
+</script>
 @endsection
