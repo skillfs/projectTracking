@@ -150,6 +150,20 @@ class SoftwareController extends Controller
         return view('softwares.list', compact('softwares'));
     }
 
+
+    public function updateStatus(Request $request, Software $software)
+    {
+        $validatedData = $request->validate([
+            'status' => 'required|string'
+        ]);
+
+        $software->status = $validatedData['status'];
+        $software->save();
+
+        return redirect()->route('softwares.dhApprovals', $software->software_id);
+    }
+
+
     public function updateDuration(Request $request, Software $software)
     {
         $validatedData = $request->validate([

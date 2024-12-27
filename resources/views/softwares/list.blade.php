@@ -49,16 +49,12 @@ $routeName = request()->route()->getName();
                 <!-- Only show if status is pending, or whatever condition you use for DH approvals -->
                 @if($software->status === 'pending')
                 <td>
-                    <form action="{{ route('softwares.update', $software->software_id) }}" method="POST" style="display:inline-block;">
+                    <form action="{{ route('softwares.updateStatus', $software->software_id) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status" value="approved by DH">
                         <button type="submit" class="btn btn-success btn-sm">อนุมัติ</button>
-                    </form>
 
-                    <form action="{{ route('softwares.update', $software->software_id) }}" method="POST" style="display:inline-block;">
-                        @csrf
-                        @method('PATCH')
                         <input type="hidden" name="status" value="canceled">
                         <button type="submit" class="btn btn-danger btn-sm">ปฏิเสธ</button>
                     </form>

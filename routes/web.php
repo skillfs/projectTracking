@@ -71,7 +71,8 @@ Route::prefix('softwares')->group(function () {
             ->whereNumber('id');
 
         Route::get('/{software}/edit', 'edit')->name('edit');
-        Route::patch('/{software}', 'update')->name('update');
+        Route::patch('/{software}/update', 'update')->name('update');
+        Route::patch('/{software}/updateStatus', 'updateStatus')->name('updateStatus');
         Route::put('/{software}/update-duration', 'updateDuration')->name('updateDuration');
         Route::delete('/{software}', 'destroy')->name('destroy');
     });

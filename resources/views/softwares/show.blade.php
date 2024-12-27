@@ -18,6 +18,7 @@ $software->l_name === $user->l_name
 @endphp
 
 <div class="container">
+
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold">รายละเอียดข้อมูลการพัฒนาซอฟต์แวร์</h4>
