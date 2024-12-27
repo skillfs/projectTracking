@@ -36,10 +36,20 @@ return new class extends Migration
             $table->foreignId('timeline_regist_number')->references('software_id')->on('softwares')->cascadeOnDelete();
             $table->date('timeline_date');
             $table->string('timeline_step');
+            $table->string('recorded_by')->nullable();
             // $table->date('timeline_start');
             // $table->date('timeline_end');
             $table->timestamps();
         });
+
+        Schema::create('uploaded_files', function (Blueprint $table) {
+            $table->id('files_id');
+            $table->foreignId('software_id')->references('software_id')->on('softwares')->cascadeOnDelete(); // Links to the 'softwares' table
+            $table->string('original_name'); // Stores the original file name
+            $table->string('path'); // Stores the file path
+            $table->timestamps(); // To track when files were uploaded
+        });
+
     }
 
     /**
@@ -47,7 +57,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('softwares');
         Schema::dropIfExists('timelines');
+        Schema::dropIfExists('uploaded_files');
+        Schema::dropIfExists('softwares');
     }
 };

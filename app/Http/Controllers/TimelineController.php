@@ -67,7 +67,7 @@ class TimelineController extends Controller
             'timeline_regist_number' => $software->software_id,
             'timeline_date' => $validatedData['timeline_date'],
             'timeline_step' => $timelineStep, // Use the correct timeline step (predefined or custom)
-            'recorded_by' => $user->f_name . ' ' . $user->l_name,
+            // 'recorded_by' => $user->f_name . ' ' . $user->l_name,
         ]);
 
         // Update the software status
