@@ -45,8 +45,8 @@
                 </div>
                 <div class="col-md-6">
                     <label for="date" class="form-label">วันที่ขอ *</label>
-                    <input type="date" name="date" id="date" class="form-control" value="{{ old('date', \Carbon\Carbon::today()->format('Y-m-d')) }}"
-                        required readonly>
+                    <input type="date" name="date" id="date" class="form-control"
+                        value="{{ old('date', \Carbon\Carbon::today()->format('Y-m-d')) }}" required readonly>
                 </div>
             </div>
 
