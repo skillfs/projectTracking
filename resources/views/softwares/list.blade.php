@@ -27,8 +27,8 @@
                     <th>สถานะคำขอ</th>
                     <th>รายละเอียด</th>
                     @if (
-                        ($routeName === 'softwares.dhApprovals' && $userRole === 'Department Head') ||
-                            ($routeName === 'softwares.adminApprovals' && $userRole === 'Admin'))
+                        ($routeName === 'softwares.dhApprovals' && $userRole === 'department_head') ||
+                            ($routeName === 'softwares.adminApprovals' && $userRole === 'admin'))
                         <th>ดำเนินการ</th>
                     @endif
                 </tr>
@@ -45,7 +45,7 @@
                                 แสดงรายละเอียดคำขอ
                             </a>
                         </td>
-                        @if ($routeName === 'softwares.dhApprovals' && $userRole === 'Department Head')
+                        @if ($routeName === 'softwares.dhApprovals' && $userRole === 'department_head')
                             <!-- For DH: Approve/Reject pending requests -->
                             <!-- Only show if status is pending, or whatever condition you use for DH approvals -->
                             @if ($software->status === 'pending')
@@ -56,7 +56,11 @@
                                         @method('PATCH')
                                         <input type="hidden" name="status" value="approved by DH">
                                         <button type="submit" class="btn btn-success btn-sm">อนุมัติ</button>
-
+                                    </form>
+                                    <form action="{{ route('softwares.updateStatus', $software->software_id) }}" method="POST"
+                                        style="display:inline-block;">
+                                        @csrf
+                                        @method('PATCH')
                                         <input type="hidden" name="status" value="canceled">
                                         <button type="submit" class="btn btn-danger btn-sm">ปฏิเสธ</button>
                                     </form>
@@ -64,19 +68,19 @@
                             @else
                                 <td>-</td>
                             @endif
-                        @elseif($routeName === 'softwares.adminApprovals' && $userRole === 'Admin')
+                        @elseif($routeName === 'softwares.adminApprovals' && $userRole === 'admin')
                             @if ($software->status === 'approved by DH')
-                                <!-- Admin Approve/Reject -->
+                                <!-- admin Approve/Reject -->
                                 <td>
-                                    <form action="{{ route('softwares.update', $software->software_id) }}" method="POST"
+                                    <form action="{{ route('softwares.updateStatus', $software->software_id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('PATCH')
-                                        <input type="hidden" name="status" value="approved by admin">
+                                        <input type="hidden" name="status" value="queued">
                                         <button type="submit" class="btn btn-success btn-sm">อนุมัติ</button>
                                     </form>
 
-                                    <form action="{{ route('softwares.update', $software->software_id) }}" method="POST"
+                                    <form action="{{ route('softwares.updateStatus', $software->software_id) }}" method="POST"
                                         style="display:inline-block;">
                                         @csrf
                                         @method('PATCH')
@@ -85,7 +89,7 @@
                                     </form>
                                 </td>
                             @elseif($software->status === 'queued' || $software->status === 'in progress')
-                                <!-- Admin can now edit these requests -->
+                                <!-- admin can now edit these requests -->
                                 <td>
                                     <a href="{{ route('timelines.edit', $software->software_id) }}"
                                         class="btn btn-warning btn-sm">แก้ไข</a>
@@ -98,7 +102,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ ($routeName === 'softwares.dhApprovals' && $userRole === 'Department Head') || ($routeName === 'softwares.adminApprovals' && $userRole === 'Admin') ? '6' : '5' }}"
+                        <td colspan="{{ ($routeName === 'softwares.dhApprovals' && $userRole === 'department_head') || ($routeName === 'softwares.adminApprovals' && $userRole === 'admin') ? '6' : '5' }}"
                             class="text-center">ไม่มีข้อมูลคำขอ</td>
                     </tr>
                 @endforelse

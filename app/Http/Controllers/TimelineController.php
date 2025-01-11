@@ -21,7 +21,7 @@ class TimelineController extends Controller
         // Ensure only Admins can access this page
         $user = Auth::user();
         $userRole = $user->role()->first() ? $user->role()->first()->role_name : '';
-        if ($userRole !== 'Admin') {
+        if ($userRole !== 'admin') {
             abort(403, 'Unauthorized');
         }
 

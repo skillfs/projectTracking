@@ -135,10 +135,10 @@ class SoftwareController extends Controller
 
         $query = Software::query();
 
-        if ($routeName === 'softwares.dhApprovals' && $userRole === 'Department Head') {
+        if ($routeName === 'softwares.dhApprovals' && $userRole === 'department_head') {
             $query->where('status', 'pending')
                 ->where('department_id', $user->department);
-        } elseif ($routeName === 'softwares.adminApprovals' && $userRole === 'Admin') {
+        } elseif ($routeName === 'softwares.adminApprovals' && $userRole === 'admin') {
             $query->whereIn('status', ['approved by DH', 'queued', 'in progress']);
         } elseif ($routeName === 'softwares.myRequests') {
             $query->where('f_name', $user->f_name)
@@ -159,8 +159,11 @@ class SoftwareController extends Controller
 
         $software->status = $validatedData['status'];
         $software->save();
-
-        return redirect()->route('softwares.dhApprovals', $software->software_id);
+        if ($validatedData['status'] == 'queued') {
+            return redirect()->route('softwares.adminApprovals', $software->software_id);
+        } else {
+            return redirect()->route('softwares.dhApprovals', $software->software_id);
+        }
     }
 
 

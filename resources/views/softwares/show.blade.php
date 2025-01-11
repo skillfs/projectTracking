@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     @php
         $user = Auth::user();
         $userRole = $user->role()->first() ? $user->role()->first()->role_name : '';
@@ -99,47 +100,71 @@
                                 @endif
                             </ul>
                         </div>
-
+                        <style>
+                            .status {
+                                display: flex;
+                            }
+                        </style>
                         {{-- Current Status --}}
                         <div class="mb-3">
-                            <strong>สถานะปัจจุบัน:</strong>
-                            @php
-                            $statuses = [
-                                'canceled' => 'image/cancel',
-                                'approved by DH' => 'image/person',
-                                'approved by admin' => 'image/person',
-                                'queued' => 'image/wait',
-                                'in progress' => 'image/dev',
-                                'finish' => 'image/finish'
-                            ];
-                            $currentStatusFound = false;
-                        @endphp
-                        
-                        @foreach ($statuses as $statusKey => $imagePath)
-                            @php
-                                // กำหนดเงื่อนไขสำหรับ active
-                                $isActive = !$currentStatusFound 
-                                            && !($software->status === 'approved by DH' && $statusKey === 'canceled'); // ไม่ active 'canceled' ในกรณีนี้
-                                
-                                if ($software->status === $statusKey) {
-                                    $currentStatusFound = true; // เจอสถานะปัจจุบันแล้ว
-                                }
-                            @endphp
-                        
-                            {{-- แสดงไอคอนของสถานะ --}}
-                            <img src="{{ url($isActive ? $imagePath . '_active.png' : $imagePath . '_inactive.png') }}" 
-                                 alt="{{ $statusKey }}" width="35" height="35">
-                        
-                            {{-- แสดง line ระหว่างสถานะ --}}
-                            @if (!$loop->last)
+                            <strong>สถานะ :</strong>
+                            <div class="status">
                                 @php
-                                    // กำหนดเส้น (line) ให้แสดง active หรือ inactive
-                                    $lineImage = ($statusKey === 'canceled' || $currentStatusFound) ? 'image/line_cancel.png' : 'image/line_active.png';
+                                    $statuses = [
+                                        'canceled' => 'image/cancel',
+                                        'pending' => 'image/person',
+                                        'approved by DH' => 'image/person',
+                                        'queued' => 'image/wait',
+                                        'in progress' => 'image/dev',
+                                        'finish' => 'image/finish',
+                                    ];
+                                    $currentStatusFound = false;
                                 @endphp
-                                <img src="{{ url($lineImage) }}" alt="line" width="35" height="35">
-                            @endif
-                        @endforeach
-                        
+
+                                @foreach ($statuses as $statusKey => $imagePath)
+                                    @php
+                                        $isActive =
+                                            !$currentStatusFound &&
+                                            !($software->status === 'approved by DH' && $statusKey === 'canceled');
+
+                                        if ($software->status === $statusKey) {
+                                            $currentStatusFound = true;
+                                        }
+                                    @endphp
+
+                                    <div style="text-align: center; margin-bottom: 10px;">
+                                        @if (!($software->status === 'canceled') && $statusKey === 'canceled')
+                                            <img src="{{ url('image/cancel_inactive.png') }}" alt="{{ $statusKey }}"
+                                                width="35" height="35">
+                                        @else
+                                            <img src="{{ url($isActive ? $imagePath . '_active.png' : $imagePath . '_inactive.png') }}"
+                                                alt="{{ $statusKey }}" width="35" height="35">
+                                        @endif
+
+                                        {{-- แสดงชื่อสถานะ --}}
+                                        <p style="margin-top: 5px;">{{ $statusKey }}</p>
+                                    </div>
+
+                                    @if (!$loop->last)
+                                        @php
+                                            if ($software->status === 'canceled') {
+                                                $lineImage = $loop->first
+                                                    ? 'image/line_cancel.png'
+                                                    : 'image/line_inactive.png';
+                                            } else {
+                                                if ($loop->first) {
+                                                    $lineImage = 'image/line_inactive.png';
+                                                } else {
+                                                    $lineImage = !$currentStatusFound
+                                                        ? 'image/line_active.png'
+                                                        : 'image/line_inactive.png';
+                                                }
+                                            }
+                                        @endphp
+                                        <img src="{{ url($lineImage) }}" alt="line" width="80" height="35">
+                                    @endif
+                                @endforeach
+                            </div>
 
                         </div>
 

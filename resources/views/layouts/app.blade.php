@@ -15,9 +15,9 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=hourglass_empty" />
+    
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
+    @vite(['resources/sass/app.scss', 'resources/js/app.js','resources/css/style.css'])
     <style>
         /* Example styling for the white circle icon */
         .profile-icon {
@@ -36,6 +36,8 @@
             height: auto;
             border-radius: 50%;
         }
+
+        
     </style>
 </head>
 
@@ -68,8 +70,8 @@
                             <a class="nav-link text-white" href="{{ route('softwares.list') }}">คำขอพัฒนา</a>
                         </li>
 
-                        <!-- Show only if user is Department Head -->
-                        @if($userRole === 'Department Head')
+                        <!-- Show only if user is department_head -->
+                        @if($userRole === 'department_head')
                         <li class="nav-item">
                             <a class="nav-link text-white" href="{{ route('softwares.dhApprovals') }}">
                                 หัวหน้าแผนก
@@ -77,8 +79,8 @@
                         </li>
                         @endif
 
-                        <!-- Show only if user is Admin -->
-                        @if($userRole === 'Admin')
+                        <!-- Show only if user is admin -->
+                        @if($userRole === 'admin')
                         <li class="nav-item">
                             <a class="nav-link text-white" href="{{ route('softwares.adminApprovals') }}">
                                 หัวหน้าทีมพัฒนา
