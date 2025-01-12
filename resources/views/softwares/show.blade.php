@@ -116,7 +116,7 @@
                                         'approved by DH' => 'image/person',
                                         'queued' => 'image/wait',
                                         'in progress' => 'image/dev',
-                                        'finish' => 'image/finish',
+                                        'completed' => 'image/finish',
                                     ];
                                     $currentStatusFound = false;
                                 @endphp
@@ -142,7 +142,36 @@
                                         @endif
 
                                         {{-- แสดงชื่อสถานะ --}}
-                                        <p style="margin-top: 5px;">{{ $statusKey }}</p>
+                                        <p style="margin-top: 5px;">
+                                            @switch($statusKey)
+                                                @case('canceled')
+                                                    ยกเลิก
+                                                @break
+
+                                                @case('completed')
+                                                    เสร็จสิ้น
+                                                @break
+
+                                                @case('queued')
+                                                    อยู่ในคิว
+                                                @break
+
+                                                @case('pending')
+                                                    รอหัวหน้าแผนกอนุมัติ
+                                                @break
+
+                                                @case('approved by DH')
+                                                    รอหัวหน้าทีมพัฒนาอนุมัติ
+                                                @break
+
+                                                @case('in progress')
+                                                    กำลังดำเนินการ
+                                                @break
+
+                                                @default
+                                                    ไม่ทราบสถานะ
+                                            @endswitch
+                                        </p>
                                     </div>
 
                                     @if (!$loop->last)
