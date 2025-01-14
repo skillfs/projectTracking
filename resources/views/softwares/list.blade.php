@@ -15,10 +15,8 @@
             </a>
         </div>
 
-        <!-- Removed the Filter Section -->
-
         <!-- Table Section -->
-        <table class="table table-hover table-bordered">
+        <table id="myTable" class="table table-hover table-bordered">
             <thead class="table-light">
                 <tr>
                     <th>วันที่ขอ</th>
@@ -45,7 +43,7 @@
                                 'completed' => 'bg-success p-2',
                                 'queued' => 'bg-info p-2',
                                 'pending' => 'bg-warning p-2',
-                                'approved by DH' => 'bg-warning p-2 fs-6',
+                                'approved by DH' => 'bg-warning p-2',
                                 'in progress' => 'bg-primary p-2',
                             ];
                         @endphp
@@ -149,4 +147,11 @@
                 </tbody>
             </table>
         </div>
+    @endsection
+    @section('scripts')
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+            })
+        </script>
     @endsection

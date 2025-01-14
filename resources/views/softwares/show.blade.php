@@ -259,7 +259,7 @@
                     <form action="{{ route('softwares.update', $software->software_id) }}" method="POST" class="me-2">
                         @csrf
                         @method('PATCH')
-                        <input type="hidden" name="status" value="approved by admin">
+                        <input type="hidden" name="status" value="queued">
                         <button type="submit" class="btn btn-success">อนุมัติ</button>
                     </form>
                     <form action="{{ route('softwares.update', $software->software_id) }}" method="POST">

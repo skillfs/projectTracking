@@ -1,0 +1,91 @@
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.profile-icon img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+
+/* home.balde.php */
+.bg-all {
+    background-color: #9fffff;
+}
+.bg-all h5,
+p {
+    color: black;
+}
+.bg-dh {
+    background-color: #9fb5ff;
+}
+.bg-dh h5,
+p {
+    color: black;
+}
+.bg-ad {
+    background-color: #9fb5ff;
+}
+.bg-ad h5,
+p {
+    color: black;
+}
+.bg-wait {
+    background-color: #adff7d;
+}
+.bg-wait h5,
+p {
+    color: black;
+}
+.bg-prog {
+    background-color: #ffe48a;
+}
+.bg-prog h5,
+p {
+    color: black;
+}
+.bg-com {
+    background-color: #4de461;
+}
+.bg-com h5,
+p {
+    color: black;
+}
+.bg-can {
+    background-color: #ff4f4f;
+}
+.bg-can h5,
+p {
+    color: black;
+}
+
+.table-container {
+    max-height: 550px;
+    overflow-y: scroll;
+}
+
+.table-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: transparent;
+    border: transparent;
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #bebebe;
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
