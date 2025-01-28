@@ -69,6 +69,7 @@ p {
 .table-container {
     max-height: 550px;
     overflow-y: scroll;
+    resize: vertical;
 }
 
 .table-container::-webkit-scrollbar {

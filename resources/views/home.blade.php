@@ -87,7 +87,7 @@
                                     {{ $label }}
                                     {{ isset($software) ? $software->where('status', $status)->count() : 0 }} รายการ
                                 </div>
-                                <div class="card-body table-container p-0">
+                                <div class="card-body p-0">
                                     <table class="table table-borderless m-0">
                                         <thead class="table-light">
                                             <tr>
