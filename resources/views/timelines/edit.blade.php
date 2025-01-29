@@ -103,7 +103,7 @@
                 </div>
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-success me-2">บันทึก</button>
-                    <a href="{{ route('softwares.list') }}" class="btn btn-danger">ปิด</a>
+                    <a href="{{ route('softwares.adminApprovals') }}" class="btn btn-danger">ปิด</a>
                 </div>
             </form>
         </div>

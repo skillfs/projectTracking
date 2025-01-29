@@ -237,32 +237,32 @@
 
         {{-- Action Buttons based on Role and Status --}}
         <div class="d-flex justify-content-end mt-4">
-            @if ($userRole === 'Department Head')
+            @if ($userRole === 'department_head')
                 @if ($software->status === 'pending')
                     <!-- DH Approve/Reject -->
-                    <form action="{{ route('softwares.update', $software->software_id) }}" method="POST" class="me-2">
+                    <form action="{{ route('softwares.updateStatus', $software->software_id) }}" method="POST" class="me-2">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status" value="approved by DH">
                         <button type="submit" class="btn btn-success">อนุมัติ</button>
                     </form>
-                    <form action="{{ route('softwares.update', $software->software_id) }}" method="POST">
+                    <form action="{{ route('softwares.updateStatus', $software->software_id) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status" value="canceled">
                         <button type="submit" class="btn btn-danger">ปฏิเสธ</button>
                     </form>
                 @endif
-            @elseif($userRole === 'Admin')
-                @if ($software->approved_by_dh && $software->status === 'approved by DH')
+            @elseif($userRole === 'admin')
+                @if ($software->status === 'approved by DH')
                     <!-- Admin Approve/Reject -->
-                    <form action="{{ route('softwares.update', $software->software_id) }}" method="POST" class="me-2">
+                    <form action="{{ route('softwares.updateStatus', $software->software_id) }}" method="POST" class="me-2">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status" value="queued">
                         <button type="submit" class="btn btn-success">อนุมัติ</button>
                     </form>
-                    <form action="{{ route('softwares.update', $software->software_id) }}" method="POST">
+                    <form action="{{ route('softwares.updateStatus', $software->software_id) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status" value="canceled">
