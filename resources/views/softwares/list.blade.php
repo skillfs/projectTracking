@@ -16,7 +16,7 @@
         </div>
 
         <!-- Table Section -->
-        <table id="myTable" class="table table-hover table-bordered">
+        <table id="software_table" class="table table-hover table-bordered">
             <thead class="table-light">
                 <tr>
                     <th>วันที่ขอ</th>
@@ -151,7 +151,7 @@
     @section('scripts')
         <script>
             $(document).ready(function() {
-                $('#myTable').DataTable();
+                $('#software_table').DataTable();
             })
         </script>
     @endsection

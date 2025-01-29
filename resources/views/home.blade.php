@@ -58,7 +58,7 @@
                 <div class="col">
                     <div class="card bg-com text-white">
                         <div class="card-body">
-                            <h5 class="card-title">{{ 'คำขอที่พัฒนาเสร็จสิน' }}</h5>
+                            <h5 class="card-title">{{ 'คำขอที่พัฒนาเสร็จสิ้น' }}</h5>
                             <p class="card-text fs-4">
                                 {{ isset($software) ? $software->where('status', 'completed')->count() : 0 }}</p>
                             <p class="card-text">รายการ</p>
