@@ -34,7 +34,7 @@
             <tbody>
                 @forelse ($softwares as $software)
                     <tr>
-                        <td>{{ \Carbon\Carbon::parse($software->date)->format('d F Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($software->date)->format('Y F d') }}</td>
                         <td>{{ $software->software_name }}</td>
                         <td>{{ $software->f_name }} {{ $software->l_name }}</td>
                         <td>@php

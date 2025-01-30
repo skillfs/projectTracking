@@ -15,7 +15,7 @@ class SoftwareController extends Controller
 
     public function index()
     {
-        $softwares = Software::orderBy('created_at', 'desc')
+        $softwares = Software::orderBy('created_at', 'asc')
             ->paginate(self::PAGINATION_COUNT);
 
         return view('softwares.index', compact('softwares'));
