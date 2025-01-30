@@ -7,7 +7,7 @@
             <!-- Summary Cards -->
             <div class="row text-center mb-4">
                 <div class="col">
-                    <div class="card bg-all text-white">
+                    <div class="card bg-all">
                         <div class="card-body">
                             <h5 class="card-title">{{ 'คำขอทั้งหมด' }}</h5>
                             <p class="card-text fs-4">{{ isset($software) ? $software->count() : 0 }}</p>
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card bg-dh text-white">
+                    <div class="card bg-dh">
                         <div class="card-body">
                             <h5 class="card-title">{{ 'รอหัวหน้าแผนกอนุมัติ' }}</h5>
                             <p class="card-text fs-4">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card bg-ad text-white">
+                    <div class="card bg-ad">
                         <div class="card-body">
                             <h5 class="card-title">{{ 'รอหัวหน้าทีมพัฒนาอนุมัติ' }}</h5>
                             <p class="card-text fs-4">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card bg-wait text-white">
+                    <div class="card bg-wait">
                         <div class="card-body">
                             <h5 class="card-title">{{ 'คำขอที่รอคิวพัฒนา' }}</h5>
                             <p class="card-text fs-4">{{ isset($software) ? $software->where('status', 'queued')->count() : 0 }}
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card bg-prog text-white">
+                    <div class="card bg-prog">
                         <div class="card-body">
                             <h5 class="card-title">{{ 'คำขอที่กำลังพัฒนา' }}</h5>
                             <p class="card-text fs-4">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card bg-com text-white">
+                    <div class="card bg-com">
                         <div class="card-body">
                             <h5 class="card-title">{{ 'คำขอที่พัฒนาเสร็จสิ้น' }}</h5>
                             <p class="card-text fs-4">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card bg-can text-white">
+                    <div class="card bg-can">
                         <div class="card-body">
                             <h5 class="card-title">{{ 'คำขอที่ถูกยกเลิก' }}</h5>
                             <p class="card-text fs-4">

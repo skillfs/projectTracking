@@ -1,3 +1,110 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.profile-icon img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+
+/* home.balde.php */
+.bg-all {
+    background-color: #259dee ;
+    border-right: 3px solid rgb(63, 63, 63) ;
+    border-bottom: 3px solid rgb(63, 63, 63) ;
+}
+.bg-all h5,
+p {
+    color: black;
+}
+.bg-dh {
+    background-color: #6fbff5 ;
+    border-right: 3px solid rgb(63, 63, 63) ;
+    border-bottom: 3px solid rgb(63, 63, 63) ;
+}
+.bg-dh h5,
+p {
+    color: black;
+}
+.bg-ad {
+    background-color: #6fbff5 ;
+    border-right: 3px solid rgb(63, 63, 63) ;
+    border-bottom: 3px solid rgb(63, 63, 63) ;
+}
+.bg-ad h5,
+p {
+    color: black;
+}
+.bg-wait {
+    background-color: #f1c40f ;
+    border-right: 3px solid rgb(63, 63, 63) ;
+    border-bottom: 3px solid rgb(63, 63, 63) ;
+}
+.bg-wait h5,
+p {
+    color: black;
+}
+.bg-prog {
+    background-color: #b7ec3b ;
+    border-right: 3px solid rgb(63, 63, 63) ;
+    border-bottom: 3px solid rgb(63, 63, 63) ;
+}
+.bg-prog h5,
+p {
+    color: black;
+}
+.bg-com {
+    background-color: #2ecc71 ;
+    border-right: 3px solid rgb(63, 63, 63) ;
+    border-bottom: 3px solid rgb(63, 63, 63) ;
+}
+.bg-com h5,
+p {
+    color: black;
+}
+.bg-can {
+    background-color: #ff442f ;
+    border-right: 3px solid rgb(63, 63, 63) ;
+    border-bottom: 3px solid rgb(63, 63, 63) ;
+}
+.bg-can h5,
+p {
+    color: black;
+}
+
+.table-container {
+    max-height: 550px;
+    overflow-y: scroll;
+    resize: vertical;
+}
+
+.table-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: transparent;
+    border: transparent;
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #bebebe;
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+.nav-pills .nav-link:hover {
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+}

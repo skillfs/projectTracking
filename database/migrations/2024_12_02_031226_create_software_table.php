@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('target', 191);
             $table->text('purpose');
             $table->string('status', 191)->default('pending'); // Default to 'pending'
-            $table->boolean('approved_by_dh')->default(false);
-            $table->boolean('approved_by_admin')->default(false);
+            // $table->boolean('approved_by_dh')->default(false);
+            // $table->boolean('approved_by_admin')->default(false);
             $table->string('file')->nullable();
             $table->date('date');
             $table->date('timeline_start')->nullable();

@@ -53,7 +53,8 @@ class RegisterController extends Controller
             'f_name' => ['required', 'string', 'max:255'],
             'l_name' => ['required', 'string', 'max:255'],
             'status' => ['required', 'string'],
-            'department_id' => ['required', 'integer'],
+            'department' => ['required', 'integer'],
+            'role' => ['required', 'integer'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -71,7 +72,8 @@ class RegisterController extends Controller
             'f_name' => $data['f_name'],
             'l_name' => $data['l_name'],
             'status' => $data['status'],
-            'department_id' => $data['department_id'],
+            'department' => $data['department'],
+            'role' => $data['role'],
             'password' => Hash::make($data['password']),
         ]);
     }
