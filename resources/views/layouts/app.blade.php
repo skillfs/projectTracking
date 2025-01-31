@@ -92,6 +92,9 @@
                                 </li>
                             @endif
                         @else
+                            <li class="d-flex align-items-center">
+                                <h5 class="text-white">{{ $user->username }}</h5>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center"
                                     href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
