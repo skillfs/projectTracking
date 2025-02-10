@@ -16,8 +16,7 @@ use App\Models\UploadedFile;
 | which contains the "web" middleware group. Now create something great!
 */
 
-// Home Page
-Route::view('/', 'home');
+
 
 // Route Model Binding for UploadedFile
 Route::bind('file', function ($value) {
@@ -93,3 +92,6 @@ Route::get('/timelines/{timeline}/edit', [TimelineController::class, 'editTimeli
 
 Route::delete('/timelines/{timeline}', [TimelineController::class, 'destroy'])
     ->name('timelines.destroy');
+
+// Home Page
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);

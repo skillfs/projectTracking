@@ -16,7 +16,7 @@
         </div>
 
         <!-- Table Section -->
-        <table id="myTable" class="table table-hover table-bordered">
+        <table id="software_table" class="table table-hover table-bordered">
             <thead class="table-light">
                 <tr>
                     <th>วันที่ขอ</th>
@@ -34,7 +34,7 @@
             <tbody>
                 @forelse ($softwares as $software)
                     <tr>
-                        <td>{{ \Carbon\Carbon::parse($software->date)->format('d F Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($software->date)->format('Y F d') }}</td>
                         <td>{{ $software->software_name }}</td>
                         <td>{{ $software->f_name }} {{ $software->l_name }}</td>
                         <td>@php
@@ -151,7 +151,7 @@
     @section('scripts')
         <script>
             $(document).ready(function() {
-                $('#myTable').DataTable();
+                $('#software_table').DataTable();
             })
         </script>
     @endsection

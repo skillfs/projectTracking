@@ -72,12 +72,27 @@
 
                         <!-- Department ID -->
                         <div class="row mb-3">
-                            <label for="department_id" class="col-md-4 col-form-label text-md-end">{{ __('Department ID') }}</label>
+                            <label for="department" class="col-md-4 col-form-label text-md-end">{{ __('Department ID') }}</label>
 
                             <div class="col-md-6">
-                                <input id="department_id" type="number" class="form-control @error('department_id') is-invalid @enderror" name="department_id" value="{{ old('department_id', $user->department_id ?? '') }}" required>
+                                <input id="department" type="number" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ old('department', $user->department ?? '') }}" required>
 
-                                @error('department_id')
+                                @error('department')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                       
+                        <!-- Role ID -->
+                        <div class="row mb-3">
+                            <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('Role ID') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="role" type="number" class="form-control @error('role') is-invalid @enderror" name="role" value="{{ old('role', $user->role ?? '') }}" required>
+
+                                @error('role')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

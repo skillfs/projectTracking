@@ -87,7 +87,7 @@
                     ยกเลิก
                 </a>
                 <button type="submit" class="btn btn-success">
-                    บันทึกการแก้ไข (AJAX)
+                    บันทึกการแก้ไข
                 </button>
             </div>
         </form>
