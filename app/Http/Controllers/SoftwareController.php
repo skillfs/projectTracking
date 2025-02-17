@@ -153,13 +153,20 @@ class SoftwareController extends Controller
 
     public function updateStatus(Request $request, Software $software)
     {
-        $validatedData = $request->validate([
-            'status' => 'required|string'
+        $request->validate([
+            'status' => 'required|string',
         ]);
 
-        $software->status = $validatedData['status'];
+        $newStatus = $request->input('status');
+
+        $software->status = $newStatus;
         $software->save();
-        if ($validatedData['status'] == 'queued') {
+        if ($newStatus === 'queued') {
+            Timeline::create([
+                'timeline_regist_number' => $software->software_id,
+                'timeline_date' => now(), // Set current timestamp
+                'timeline_step' => 'อนุมัติ', // The required step
+            ]);
             return redirect()->route('softwares.adminApprovals', $software->software_id);
         } else {
             return redirect()->route('softwares.dhApprovals', $software->software_id);
