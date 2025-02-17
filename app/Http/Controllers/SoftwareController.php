@@ -165,7 +165,7 @@ class SoftwareController extends Controller
             Timeline::create([
                 'timeline_regist_number' => $software->software_id,
                 'timeline_date' => now(), // Set current timestamp
-                'timeline_step' => 'อนุมัติ', // The required step
+                'timeline_step' => 'อนุมัติโดยหัวหน้าทีมพัฒนา', // The required step
             ]);
             return redirect()->route('softwares.adminApprovals', $software->software_id);
         } else {
