@@ -169,6 +169,11 @@ class SoftwareController extends Controller
             ]);
             return redirect()->route('softwares.adminApprovals', $software->software_id);
         } else {
+            Timeline::create([
+                'timeline_regist_number' => $software->software_id,
+                'timeline_date' => now(), // Set current timestamp
+                'timeline_step' => 'อนุมัติโดยหัวหน้าแผนก', // The required step
+            ]);
             return redirect()->route('softwares.dhApprovals', $software->software_id);
         }
     }
