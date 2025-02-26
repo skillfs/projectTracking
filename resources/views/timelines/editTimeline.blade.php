@@ -35,3 +35,20 @@
     </form>
 </div>
 @endsection
+
+@section('scripts')
+    <script>
+        document.getElementById('timeline_step').addEventListener('change', function() {
+            const otherStepInput = document.getElementById('otherStepInput');
+            const otherTimelineStep = document.getElementById('other_timeline_step');
+
+            if (this.value === 'Other') {
+                otherStepInput.style.display = 'block';
+                otherTimelineStep.setAttribute('required', 'required');
+            } else {
+                otherStepInput.style.display = 'none';
+                otherTimelineStep.removeAttribute('required');
+            }
+        });
+    </script>
+@endsection
